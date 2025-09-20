@@ -6,8 +6,9 @@
 
 .SUFFIXES:
 
-sources = mod1:f%1.src mod1:f%2.src mod1:f%3.src
+sources := mod1:f%1.src mod1:f%2.src mod1:f%3.src
 objects := $(sources:.src=.o)
+$(info sources = $(sources))
 $(info objects = $(objects))
 
 # build the final target

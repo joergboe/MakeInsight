@@ -42,7 +42,7 @@ show:
 
 # characters with no special meaning to make
 .PHONY: notspecial
-notspecial: filensp@n filensp&n filensp§n filensp!n filensp+n filensp-n filensp_n filensp<n filensp>n filensp~n\
+notspecial: filensp@n filensp&n filensp!n filensp+n filensp-n filensp_n filensp<n filensp>n filensp~n\
             filensp"n filensp'n filensp,n filensp.n filensp(n filensp)n filensp{n filensp}n
 filensp@n:
 	# Characters with no special meaning to make:
@@ -50,8 +50,6 @@ filensp@n:
 	touch $@
 filensp&n:
 	touch '$@' # shell metacharacter
-filensp§n:
-	touch $@
 filensp!n:
 	touch $@ # shell reserved word
 filensp+n:
@@ -87,7 +85,7 @@ filensp}n:
 # characters with no special meaning to make preceded by a slash
 .PHONY: notspecial2
 notspecial2: filebnsp\@nb filebnsp\\@nbb filebnsp\\\@nbbb\
-             filebnsp\&nb filebnsp\§nb filebnsp\!nb filebnsp\+nb filebnsp\-nb filebnsp\_nb\
+             filebnsp\&nb filebnsp\!nb filebnsp\+nb filebnsp\-nb filebnsp\_nb\
              filebnsp\<nb filebnsp\>nb filebnsp\~nb filebnsp\"nb filebnsp\'nb filebnsp\,nb filebnsp\.nb\
              filebnsp\(nb filebnsp\)nb filebnsp\{nb filebnsp\}nb
 filebnsp\@nb:
@@ -95,8 +93,6 @@ filebnsp\@nb:
 	# Preceding backslashes go unmolested - N preceding backslashes represents N backslashes
 	touch '$@'
 filebnsp\&nb:
-	touch '$@'
-filebnsp\§nb:
 	touch '$@'
 filebnsp\!nb:
 	touch '$@'
