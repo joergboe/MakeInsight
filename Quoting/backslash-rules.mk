@@ -76,10 +76,10 @@ filem\\\\m4:
 # 2N backslashes before special char (space, tab or colon) are divided in half
 # 2N backslashes before newline survive.
 backslash2: filebe2\\ filebe4\\\\	filebee6\\\\\\
-filebe2\\:
+filebe2\\ :
 	# backslash before special char (space, tab or colon) are divided in half
 	touch '$@'
-filebe4\\\\:
+filebe4\\\\	:
 	touch '$@' # tab follows
 filebee6\\\\\\\\\\\\:
 	touch '$@'
