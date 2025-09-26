@@ -18,20 +18,30 @@
 
 # Usage  : make -f 49_grouped_target_rules.mk clean
 #          # run rule 'res1 res2 res3' - $@ is res1
+
+#          rm res3
 #          make -f 49_grouped_target_rules.mk
 #          # run rule 'res1 res2 res3' - $@ is res1 !
-#          rm res3
+
+#          rm res2
 #          make -f 49_grouped_target_rules.mk
-#          # run rule 'res1 res2 res3' - $@ is res2
+#          # run rule 'res1 res2 res3' - $@ is res1 !
+
 #          rm res3
 #          make -f 49_grouped_target_rules.mk res2
-#
-#          # run rule 'res1 res2 res3' - $@ is res1
-#          touch f1
-#          make -f 49_grouped_target_rules.mk
 #          # run rule 'res1 res2 res3' - $@ is res2
-#          touch f1
+
+#          rm res3
 #          make -f 49_grouped_target_rules.mk res2
+#          # run rule 'res1 res2 res3' - $@ is res2
+
+#          touch f1
+#          make -f 49_grouped_target_rules.mk all2
+#          # run rule 'res1 res2 res3' - $@ is res2
+
+#          touch f1
+#          make -f 49_grouped_target_rules.mk all3
+#          # run rule 'res1 res2 res3' - $@ is res3
 
 # Cleanup: make -f 49_grouped_target_rules.mk clean
 
@@ -40,6 +50,13 @@ all: res1 res2 res3
 	cat res1
 	cat res2
 	cat res3
+
+all2: res2 res3 res1
+	@echo -e "\n---- run $@ ----"
+
+all3: res3 res1 res2
+	@echo -e "\n---- run $@ ----"
+
 
 res1 res2 res3&: f1
 	@echo -e "\n---- run res1 res2 res3 ----"

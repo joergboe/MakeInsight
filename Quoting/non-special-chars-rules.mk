@@ -42,14 +42,14 @@ show:
 
 # characters with no special meaning to make
 .PHONY: notspecial
-notspecial: filensp@n filensp&n filensp!n filensp+n filensp-n filensp_n filensp<n filensp>n filensp~n\
+notspecial: filensp@n filensp&n& filensp!n filensp+n filensp-n filensp_n filensp<n filensp>n filensp~n\
             filensp"n filensp'n filensp,n filensp.n filensp(n filensp)n filensp{n filensp}n
 filensp@n:
 	# Characters with no special meaning to make:
 	# Some characters have special meaning to the shell and thus must be quoted in receipts.
 	touch $@
-filensp&n:
-	touch '$@' # shell metacharacter
+filensp&n& :
+	touch '$@' # shell metacharacter; At least one space between & and : required!
 filensp!n:
 	touch $@ # shell reserved word
 filensp+n:
