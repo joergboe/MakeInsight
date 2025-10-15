@@ -51,7 +51,14 @@
 # Disable the entire rule database.
 # Expected: No rule to make target
 # rm Hello
-# make -f 59_use_delete_implicit_rules.mk --no-builtin-rules Hello
+# make -f 59_use_delete_implicit_rules.mk Hello DIS_SUFF_ALL=1 -p | less
+# Note: Removes almost all pattern rules from the database.
+
+# Disable the entire rule database.
+# Expected: No rule to make target
+# rm Hello
+# make -f 59_use_delete_implicit_rules.mk --no-builtin-rules Hello -p | less
+# Note: Removes all pattern rules from the database.
 
 # Cleanup:
 # rm Hello
@@ -93,6 +100,11 @@ ifdef DIS_SUFF_C_O
 .SUFFIXES:
 .SUFFIXES: $(filter-out .c,$(filter-out .o,$(SUFFIXES)))
 $(info Suffixes .o .c deleted)
+endif
+
+ifdef DIS_SUFF_ALL
+.SUFFIXES:
+$(info All suffixes deleted)
 endif
 
 $(info )
