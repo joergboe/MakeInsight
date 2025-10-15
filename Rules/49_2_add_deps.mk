@@ -4,8 +4,9 @@
 
 # Unlike independent targets, a grouped target rule must include a recipe. However, targets that are 
 # members of a grouped target may also appear in independent target rule definitions that do not have recipes.
+# This add dependencies to the grouped target rule.
 
-# Usage  : make -f 49_2_add_deps.mk clean
+# Usage  : make -f 49_2_add_deps.mk
 #          # run rule 'res1 res2 res3' $@ is res1
 #          make -f 49_2_add_deps.mk
 #          # run rule 'res1 res2 res3' $@ is res1
@@ -40,7 +41,7 @@ res1 res2 res3&: f1
 	echo "$^ used for generating: res3" > res3
 	cat $^ >> res3
 
-# add dependency f2 to res1 res2 and res3
+# add dependency f2 to group res1 res2 and res3
 res2: f2
 
 f1:

@@ -16,7 +16,7 @@
 # Unlike independent targets, a grouped target rule must include a recipe. However, targets that are 
 # members of a grouped target may also appear in independent target rule definitions that do not have recipes.
 
-# Usage  : make -f 49_grouped_target_rules.mk clean
+# Usage  : make -f 49_grouped_target_rules.mk
 #          # run rule 'res1 res2 res3' - $@ is res1
 
 #          rm res3
@@ -26,10 +26,6 @@
 #          rm res2
 #          make -f 49_grouped_target_rules.mk
 #          # run rule 'res1 res2 res3' - $@ is res1 !
-
-#          rm res3
-#          make -f 49_grouped_target_rules.mk res2
-#          # run rule 'res1 res2 res3' - $@ is res2
 
 #          rm res3
 #          make -f 49_grouped_target_rules.mk res2
@@ -45,7 +41,9 @@
 
 # Cleanup: make -f 49_grouped_target_rules.mk clean
 
-all: res1 res2 res3
+.PHONY: all1 all2 all3 clean
+
+all1: res1 res2 res3
 	@echo -e "\n---- run $@ ----"
 	cat res1
 	cat res2
@@ -74,5 +72,3 @@ f1:
 
 clean:
 	rm -fv res{1..3} f1
-
-.PHONY: all clean
