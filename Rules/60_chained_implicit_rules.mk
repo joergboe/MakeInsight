@@ -4,26 +4,26 @@
 # see: https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
 
 # Usage:
-# make -f 60_chained_rules.mk target
+# make -f 60_chained_implicit_rules.mk target
 # Expect:
 # The target is produced and the object file target.o is deleted.
 
 # Run the produced target:
-# make -f 60_chained_rules.mk run
+# make -f 60_chained_implicit_rules.mk run
 
 # Do not touch anything and run make again.
-# make -f 60_chained_rules.mk STEP=2 target
+# make -f 60_chained_implicit_rules.mk STEP=2 target
 # Expect:
 # No rule is fired : make: 'target' is up to date.
 
 # Listing a file as a prerequisite of the special target .NOTINTERMEDIATE
 # forces it to not be considered intermediate.
-# make -f 60_chained_rules.mk STEP=2 NOTI=1 target
+# make -f 60_chained_implicit_rules.mk STEP=2 NOTI=1 target
 # Expect:
 # The object file and the target are re-created and the object is not deleted.
 
 # Cleanup:
-# make -f 60_chained_rules.mk clean
+# make -f 60_chained_implicit_rules.mk clean
 
 
 define text :=
