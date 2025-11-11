@@ -14,7 +14,7 @@
 # may be given special meaning in future versions of make.
 
 # Usage:
-# make -f special-chars-vars.mk
+# make -f 50_special-chars-vars.mk
 
 # No escape possible for ‘:’, ‘#’, ‘=’, or whitespace!
 # ERROR with colon
@@ -46,11 +46,11 @@ ifeq (0,${MAKELEVEL})
 cxx\=aaa = A variable name may be any sequence of characters not containing ‘:’, ‘\#’, ‘=’, or white-space.
 $(info $(cxx\))
 
-cxx$$dollar = var with dollar $$ must use $$$$
+cxx$$dollar :::= var with dollar $$ must use $$$$
 vl = cxx\ cxx$$dollar
 $(info $(cxx$$dollar))
 
-cxx$$$$2dollar := var with 2 dollars $$$$ must use $$$$$$$$
+cxx$$$$2dollar :::= var with 2 dollars $$$$ must use $$$$$$$$
 vl += cxx$$$$2dollar
 $(info $(cxx$$$$2dollar))
 
@@ -144,18 +144,22 @@ export $(vl)
 export vl
 
 $(info ***************************************************************)
-$(info Names list: $(vl))
+$(info Names list flavor = $(flavor vl))
+$(info Names list expansion = $(vl))
+$(info Names list value     = $(value vl))
 $(info $(foreach var,$(vl),$(nl)$(var) = $($(var)) origin = $(origin $(var))))
 $(info )
 
 .PHONY: all
 all:
-	$(MAKE) -f special-chars-vars.mk
+	$(MAKE) -f 50_special-chars-vars.mk
 else
 
 $(info )
 $(info *** Recursion level - Check whether variables with special names are exported propperly ***)
-$(info Names List: $(vl))
+$(info Names list flavor = $(flavor vl))
+$(info Names list expansion = $(vl))
+$(info Names list value     = $(value vl))
 $(info $(foreach var,$(vl),$(nl)$(var) = $($(var)) origin = $(origin $(var))))
 $(info )
 $(info The variables cxx$$dolla and cxx$$$$2dolla are available in the recursion level.)
@@ -170,5 +174,6 @@ all:
 	# (such as the info or eval or similar functions) then these side-effects will be seen every time
 	# a command is invoked. You can avoid this by ensuring that such variables have names which
 	# are not exportable by default. However, a better solution is to not use this “export by default”
-	# facility at all, and instead explicitly export the relevant variables by name. 
+	# facility at all, and instead explicitly export the relevant variables by name.
+	# See: https://www.gnu.org/software/make/manual/html_node/Variables_002fRecursion.html#index-exporting-variables
 endif

@@ -1,7 +1,7 @@
 # Trimming of variables
 
 # try this example with
-# > make -f trimming_variables.mk
+# > make -f 30_trimming_variables.mk
 
 # During setting of a variable from a makefile:
 # Whitespace around the variable name and immediately after the ‘=’ is ignored.
