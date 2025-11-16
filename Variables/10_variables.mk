@@ -60,6 +60,7 @@ define two-lines
 endef
 $(info Multi line variables)
 $(info $(two-lines))
+# Note: the last newline of the define is not part of the variable.
 
 # Note: a single newline variable requires 2 empty lines!
 define nl

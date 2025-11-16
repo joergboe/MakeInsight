@@ -10,12 +10,6 @@ define nl :=
 
 endef
 
-$(info strip)
-$(info strip a    b   = '$(strip a      b   )')
-$(info strip empty    = '$(strip $(empty))')
-$(info strip nl       = '$(strip $(nl))')
-$(info )
-
 # call param1, param2
 print_param = '$(1)' '$(2)'
 $(info parameter)
