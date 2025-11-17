@@ -1,65 +1,6 @@
 # demon function
 # make -f split_string.mk
 
-comma:= ,
-empty:=
-space:= $(empty) $(empty)
-spaces:= $(empty)   $(empty)
-define nl :=
-
-
-endef
-
-# call param1, param2
-print_param = '$(1)' '$(2)'
-$(info parameter)
-$(info call print_param,' a ',' b ' = $(call print_param, a , b ))
-$(info call print_param,\n'a',\n' b ' = $(call print_param,\
-a,\
-    b))
-pa = a
-pb = b
-$(info call print_param,'pa' , 'pb' = $(call print_param, $(pa) , $(pb) ))
-$(info call print_param,\n'pa',\n'b' = $(call print_param,\
-$(pa),\
-$(pb)))
-
-$(info )
-$(info let)
-$(info $(let v1 v2 v3 v4 v5,111 222 333 444 555 666,$(v1) $(v5)))
-$(info $(let v1 v2 v3 v4 v5,   111 222 333 444 555 666   ,$(v1) $(v5)))
-$(info )
-
-$(info reverse)
-reverse = --- $(2) $(1) ----
-$(info $(call reverse,55,66))
-
-$(info reverse list)
-reverse_list = $(let first rest,$(1),$(if $(rest),$(call reverse_list,$(rest)) )$(first))
-$(info $(call reverse_list,11 22 33 44))
-$(info pretty reverse list)
-pretty_reverse = $(let first rest,$(1),\
-                $(if $(rest),$(call pretty_reverse,$(rest)) )$(first))
-$(info $(call pretty_reverse,11 22 33 44))
-
-$(info compare equal)
-# call eq,param1,param2
-# Expands to 'true' if param1 and param2 are equal or to the empty string otherwise
-eq = $(if $(subst $(2),,$(1)),,true)
-$(info eq 1 2 = $(call eq,1,2))
-$(info eq 1 1 = $(call eq,1,1))
-$(info eq -- -- = $(call eq,--,--))
-$(info eq -- - - = $(call eq,--,- -))
-
-$(info compare not equal)
-# call neq,param1,param2
-# Expands to 'true' if param1 and param2 are not equal or to the empty string otherwise
-neq = $(if $(subst $(2),,$(1)),true)
-$(info neq 1 2 = $(call neq,1,2))
-$(info neq 1 1 = $(call neq,1,1))
-$(info neq -- -- = $(call neq,--,--))
-$(info neq -- - - = $(call neq,--,- -))
-
 $(info more)
 # call tail,separator,wordlist
 # Expands to the rest of the word list that follows the separator word.

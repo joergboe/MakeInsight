@@ -3,7 +3,12 @@
 # Usage:
 # make -f 10_text_functions.mk
 
-# See: https://www.gnu.org/software/make/manual/html_node/Text-Functions.html
+# General function syntax you can read here:
+# https://www.gnu.org/software/make/manual/html_node/Syntax-of-Functions.html
+
+$(info Function Call Syntax)
+$(info $$(function arguments))
+$(info $${function arguments})
 
 comma:= ,
 empty:=
@@ -15,11 +20,18 @@ define nl :=
 
 endef
 
-$(info $$(subst from,to,list))
-# Performs a textual replacement on the text text: each occurrence of from is replaced by to. The result is substituted
+# See: https://www.gnu.org/software/make/manual/html_node/Text-Functions.html
+
+
+$(info $$(subst from,to,text))
+# Performs a textual replacement on the text: each occurrence of from is replaced by to. The result is substituted
 # for the function call.
 $(info $(subst ee,EE,feet     on the street))
-# NOTE: Whitespaces are preserved.
+# NOTE: Whitespaces in text are preserved.
+
+# NOTE: Hide nitial whitespace in the first argument.
+$(info $$(subst $$(space),:,/bin /usr/bin /usr/local/bin) = $(subst $(space),:,/bin /usr/bin /usr/local/bin))
+
 $(info )
 $(info $$(patsubst pattern,replacement,text))
 # Finds whitespace-separated words in list that match pattern and replaces them with replacement. Here pattern may
