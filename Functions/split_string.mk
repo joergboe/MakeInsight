@@ -1,15 +1,26 @@
 # demon function
 # make -f split_string.mk
 
-$(info more)
+
+# call neq,param1,param2
+# Expands to 'true' if param1 and param2 are not equal or to the empty string otherwise
+neq = $(if $(subst $(2),,$(1)),true)
+
 # call tail,separator,wordlist
 # Expands to the rest of the word list that follows the separator word.
 tail = $(let first rest,$(2),$(if $(and $(rest),$(call neq,$(1),$(first))),$(call tail,$(1),$(rest)),$(rest)))
 
-teststring1 = -t -j18 --no-silent -- CXX=clang C--14=21
-$(info teststring1 = $(teststring1))
-$(info tail = $(call tail,--,$(teststring1)))
+comma:= ,
+empty:=
+space:= $(empty) $(empty)
+spaces:= $(empty)   $(empty)
+# NOTE: a single newline variable requires 2 empty lines!
+define nl :=
 
+
+endef
+
+teststring1 = -t -j18 --no-silent -- CXX=clang C--14=21
 teststring2 =
 teststring3 =  -t -j18 --no-silent
 teststring4 =  -t -j18 --no-silent --    #
@@ -29,6 +40,8 @@ $(info teststring6 = '$(teststring6)')
 $(info tail = '$(sort $(call tail,--,$(teststring6)))')
 $(info --------------)
 
+# Apped a seperator to each element of list except the last element.
+# call separator list
 append_separator = $(let first rest,$(2),$(if $(rest),$(first)$(1)$(call append_separator,$(1),$(rest)),$(first)))
 
 ts1 =
