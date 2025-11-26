@@ -48,8 +48,8 @@ $(info $$(call print_param,a,b$$(multiline)b,   c) = $(call print_param,a,b$(mul
 $(info $$(call print_param,x(x)x,y(y)y, ) = $(call print_param,x(x)x,y(y)y, ))
 # braces may be unmatched
 $(info $$(call print_param,x{xx,yy}y, ) = $(call print_param,x{xx,yy}y, ))
-# or use braces
-${info $${call print_param,x(xx,yy)y, } = ${call print_param,x(xx,yy)y, }}
+# or use braces - paranteses may be unmatches
+${info $${call print_param,x(xx,yyy, } = ${call print_param,x(xx,yyy, }}
 
 # NOTE: If a function expands to the empty string, one can use a function in makefile
 print = $(info '$1') $(info '$2')
@@ -58,13 +58,18 @@ $(call print,aa,bb)
 print = $(info '$0' '$1' '$2')
 $(call print,aa,bb)
 
+# Type of parameter variable is simlple expanded variable
+type_info = $(info type $$1 = $(flavor 1) type $$2 = $(flavor 2) type $$3 = $(flavor 3)\
+$(info value $$1 = '$(value 1)' value $$2 = '$(value 2)' value $$3 = '$(value 3)'))
+$(call type_info,a,$(comma))
+
 # NOTE: Assignements are not possible in functions.
 define assignement
 $(info $0)
 VAR = $1
 $(info end)
 endef
-#$(call assignement,1234)
+#$(call assignement,1234)  # *** missing separator.  Stop.
 
 # Must use eval in such cases
 $(eval $(call assignement,1234))
@@ -95,11 +100,24 @@ pretty_reverse = $(let first rest,$(1),\
 $(info $(call pretty_reverse,11 22 33 44))
 $(info )
 
+# Type of variables - simple expanded
+$(let v1 v2,aa bb cc,$(info type v1 = $(flavor v1) type v2 = $(flavor v2)))
 
 $(info $$(foreach var,list,text))
 # The foreach function resembles the for command in the shell sh and the foreach command in the C-shell csh.
 # See: https://www.gnu.org/software/make/manual/html_node/Foreach-Function.html
 $(info $(foreach var,$(mylist),_$(var)_))
+
 # spaces are not preserved
-$(info $(foreach var,  111 222     333 $(comma) $(space) 444 $(multiline) 555,'$(var)'))
+# NOTE: comma must be hidden; dollar must be escaped with dollar; paranteses must be pairs
+# NOTE: hashmark is not significant
+$(info $(foreach var,  111 222     333 $(comma) $(space) 444 $(multiline) 555 #66 \#666 7:7 8;8 9*9 a$$a b%b c\c d\\d e(@)e f{f g}g h[h i]i jüj kæk l"l m'm,'$(var)'))
+
+# NOTE: hashmark must be escaped by a backslash; A backslash befor a hasmark must be doubled.
+special_cars :=   111 222     333 , $(space) 444 $(multiline) 555 \#66 \\\#666 7:7 8;8 9*9 a$$a b%b c\c d\\d e(@)e f{f g}g h[h i]i jüj kæk l"l m'm
+$(info $(foreach var,$(special_cars),'$(var)'))
+
+# Type of variable - simple expanded
+$(foreach var,111 $(comma) 333,$(info type var = $(flavor var) value = $(value var)))
+
 $(info END)
