@@ -61,7 +61,7 @@ int main( ) {
 }
 endef
     $(file > target.c,$(text))
-    $(info target.c touched)
+    $(info target.c created)
 
 define text :=
 #include <stdio.h>
@@ -70,7 +70,7 @@ void greetings1(void) {
 }
 endef
     $(file > file1.c,$(text))
-    $(info file1.c touched)
+    $(info file1.c created)
 
 define text :=
 #include <stdio.h>
@@ -79,7 +79,7 @@ void greetings2(void) {
 }
 endef
     $(file > file2.c,$(text))
-    $(info file2.c touched)
+    $(info file2.c created)
 
 define text :=
 #include <stdio.h>
@@ -88,7 +88,7 @@ void greetings3(void) {
 }
 endef
     $(file > file3.c,$(text))
-    $(info file3.c touched)
+    $(info file3.c created)
   endif
 
   ifeq ($(STEP),3)

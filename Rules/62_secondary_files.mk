@@ -32,7 +32,7 @@
 # target is re-build
 
 # Cleanup:
-# make -f 61_chained_rules_explicit.mk clean
+# make -f 62_secondary_files.mk clean
 
 
 ifeq ($(MAKECMDGOALS),target)

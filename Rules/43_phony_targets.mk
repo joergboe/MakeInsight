@@ -30,19 +30,34 @@ cleanup:
 .PHONY: cleanup
 
 # Phony targets can have prerequisites.
-.PHONY: cleanall all clean
+.PHONY: cleanall all
 # When one phony target is a prerequisite of another, it serves as a subroutine of the other.
 # For example, here ‘make cleanall’ will delete more files than 'make cleanup'.
 cleanall: cleanup
 	@echo "--- run rule $@ ---"
-	@echo "Enter more commands to clean here."
+	rm -fv target2 phony1
 
 # A file target can be the prerequisite of an phony target.
 # Now you can say just ‘make all’ to remake a couple of targets.
 # Phoniness is not inherited: the prerequisites of a phony target are not themselves phony, unless
 # explicitly declared to be so.
+
+# Usage:  make -f 43_phony_targets.mk all # The target is created
+# Usage:  make -f 43_phony_targets.mk all # The target is up to date
 all: target
 
 # A phony target should not be a prerequisite of a real target file; if it is, its recipe will be
 # run every time make considers that file. As long as a phony target is never a prerequisite of a real
 # target, the phony target recipe will be executed only when the phony target is a specified goal.
+
+# Usage make -f 43_phony_targets.mk target2 # The target is created
+# Usage make -f 43_phony_targets.mk target2 # The target is created
+# Usage make -f 43_phony_targets.mk cleanall # Cleanup
+target2: phony1
+	@echo "--- run rule $@ ---"
+	touch $@
+
+phony1:
+	@echo "--- run rule $@ ---"
+	touch $@
+.PHONY: phony1

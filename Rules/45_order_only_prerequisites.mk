@@ -25,6 +25,10 @@
 # Usage: make -f 45_order_only_prerequisites.mk
 # Cleanup:make -f 45_order_only_prerequisites.mk clean
 
+# Make maintaines the right order of rule execution also in case of paralel build
+# Usage: make -f 45_order_only_prerequisites.mk -j 4
+# Cleanup:make -f 45_order_only_prerequisites.mk clean
+
 # build the final target
 build/target: build/f1.o build/f2.o build/f3.o | build
 	@echo "--- run rule $@ ---"

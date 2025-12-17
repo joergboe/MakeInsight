@@ -5,8 +5,8 @@
 # Unlike independent targets, a grouped target rule must include a recipe. However, targets that are 
 # members of a grouped target may also appear in independent target rule definitions that do not have recipes.
 
-# Usage  : make -f 49_1_must_have_recipes.mk
-#          49_1_must_have_recipes.mk:21: *** grouped targets must provide a recipe.  Stop.
+# Usage  : make -f 49_2_must_have_recipes.mk
+#          49_2_must_have_recipes.mk:21: *** grouped targets must provide a recipe.  Stop.
 
 res1 res2 res3&: f1
 	@echo -e "\n---- run res1 res2 res3 ----"

@@ -37,7 +37,7 @@
 #        echo "New text number 2" > f2
 #        make -f 40_rules.mk #-> rule 'result runs'
 #
-# Cleanup: make -f 45_rules.mk clean
+# Cleanup: make -f 40_rules.mk clean
 
 result: f1 f2 f3
 	@echo "---- run rule 'result' ----"
@@ -45,4 +45,4 @@ result: f1 f2 f3
 	cat result
 
 clean:
-	@rm -fv result
+	@rm -fv result f1 f2 f3

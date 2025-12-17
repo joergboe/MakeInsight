@@ -16,30 +16,30 @@
 # Unlike independent targets, a grouped target rule must include a recipe. However, targets that are 
 # members of a grouped target may also appear in independent target rule definitions that do not have recipes.
 
-# Usage  : make -f 49_grouped_target_rules.mk
+# Usage  : make -f 49_0_grouped_target_rules.mk
 #          # run rule 'res1 res2 res3' - $@ is res1
 
 #          rm res3
-#          make -f 49_grouped_target_rules.mk
+#          make -f 49_0_grouped_target_rules.mk
 #          # run rule 'res1 res2 res3' - $@ is res1 !
 
 #          rm res2
-#          make -f 49_grouped_target_rules.mk
+#          make -f 49_0_grouped_target_rules.mk
 #          # run rule 'res1 res2 res3' - $@ is res1 !
 
 #          rm res3
-#          make -f 49_grouped_target_rules.mk res2
+#          make -f 49_0_grouped_target_rules.mk res2
 #          # run rule 'res1 res2 res3' - $@ is res2
 
 #          touch f1
-#          make -f 49_grouped_target_rules.mk all2
+#          make -f 49_0_grouped_target_rules.mk all2
 #          # run rule 'res1 res2 res3' - $@ is res2
 
 #          touch f1
-#          make -f 49_grouped_target_rules.mk all3
+#          make -f 49_0_grouped_target_rules.mk all3
 #          # run rule 'res1 res2 res3' - $@ is res3
 
-# Cleanup: make -f 49_grouped_target_rules.mk clean
+# Cleanup: make -f 49_0_grouped_target_rules.mk clean
 
 .PHONY: all1 all2 all3 clean
 
@@ -58,7 +58,7 @@ all3: res3 res1 res2
 
 res1 res2 res3&: f1
 	@echo -e "\n---- run res1 res2 res3 ----"
-	@echo "\$$@: $@"
+	@echo "Triggered by \$$@: $@"
 	echo "f1 used for generating: res1" > res1
 	cat $< >> res1
 	echo "f1 used for generating: res2" > res2

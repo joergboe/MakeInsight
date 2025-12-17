@@ -21,7 +21,7 @@ target_44 : FORCE_44
 FORCE_44 :;
 # The column can be omitted.
 
-# There is nothing special about the name FORCE_40 - nearly the same as .PHONY: clean
+# There is nothing special about the name FORCE_44 - nearly the same as .PHONY: clean
 .PHONY: clean
 clean:
 	$(RM) target_44 FORCE_44

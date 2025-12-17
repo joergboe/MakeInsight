@@ -2,12 +2,14 @@
 
 # Use:
 # make -f 80_automation.mk USE=canned-recipe
+# Expect: All targets are produced
 # make -f 80_automation.mk clean
 
 # make -f 80_automation.mk USE=call
-# make -f 80_automation.mk clean
+# Expect: Make fails to generate recipes in function context.
 
 # make -f 80_automation.mk USE=eval
+# Expect: All targets are produced
 # make -f 80_automation.mk clean
 
 # See: https://www.gnu.org/software/make/manual/html_node/Canned-Recipes.html#index-canned-recipes
