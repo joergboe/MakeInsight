@@ -41,28 +41,30 @@ all: res1 res2 res3
 	cat res2
 	cat res3
 
-all2: res3 res2 res1
+all2: res3
 	@echo -e "\n---- run $@ ----"
 	cat res1
 	cat res2
 	cat res3
 
+# add dependency f2 to res1 res2 and res3
+res3 res2 res1: f2 f1
+
+# add dependency f3 to res1 only
+# ERROR: The automatic variables $? and $^ are not propperly set!
+res1: f3
+
 res1 res2 res3&: f1
 	@echo -e "\n---- run res1 res2 res3 ----"
 	@echo "Triggered by \$$@: $@ newer prerequisites \$$?: $?"
+	@echo "\$$< : $<"
+	@echo "\$$+ : $+"
 	echo "$^ used for generating: res1" > res1
 	cat $^ >> res1
 	echo "$^ used for generating: res2" > res2
 	cat $^ >> res2
 	echo "$^ used for generating: res3" > res3
 	cat $^ >> res3
-
-# add dependency f2 to res1 res2 and res3
-res1 res2 res3: f2
-
-# add dependency f3 to res1 only
-# ERROR: The automatic variables $? and $^ are not propperly set!
-res1: f3
 
 f1:
 	@echo -e "\n---- run $@ ----"

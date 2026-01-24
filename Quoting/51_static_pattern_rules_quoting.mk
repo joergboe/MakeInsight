@@ -4,6 +4,8 @@
 # Usage:   make -f 51_static_pattern_rules_quoting.mk
 # Cleanup: make -f 51_static_pattern_rules_quoting.mk clean
 
+# A % must be escaped in the targets list due to the escaping rules!
+
 .SUFFIXES:
 
 sources   := foobar%1.src foo\bar\%2.src foo\\bar\\%3.src
