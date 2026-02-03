@@ -85,6 +85,9 @@ $(info $$(filter pattern…,list))
 sources := foo.c bar.c baz.s ugh.h
 $(info sources = $(filter %.c %.s,$(sources)))
 $(info )
+# complete match required
+modules := mod mod1 module
+$(info contains mod = '$(filter mod,$(modules))')
 
 $(info $$(filter-out pattern…,list))
 # Returns all whitespace-separated words in list that do not match any of the pattern words, removing the words that do
