@@ -21,10 +21,12 @@ PROGRAMS    = pr1 pr2
 PHONY: all
 all: $(PROGRAMS)
 
+# Use eval to generate rules and assignments
 define PROGRAM_template =
- $(1): $(1).o
+ $(info generate rule for $1)
+ $1: $1.o
 	@echo Rule $$@
- ALL_OBJS   += $(1).o
+ ALL_OBJS   += $1.o
 endef
 
 $(foreach var,$(PROGRAMS),$(eval $(call PROGRAM_template,$(var))))
@@ -34,7 +36,8 @@ $(ALL_OBJS):
 $(info ALL_OBJS = $(ALL_OBJS))
 
 $(info )
-text ::= Dollar $$$$ must be escaped twice; \# hashmark once; paranteses must match (x); and braches must not match{; comma, is possible
+text ::= Dollar $$$$ must be escaped twice; \# hashmark once; \\\# backslash hashmark must follow quoting rule;\
+paranteses must match (x); and braches may not match{; comma, is possible
 $(eval $$(info $(text)))
 
 $(info )
@@ -47,7 +50,7 @@ SRC_MOD_CMI_IS-IF_LIST += weired\#name][?*!§%\\\src,(1){äæ.cpp;weiredname][?*
 
 # The function to define variables invoked by 'call'
 define split =
-$(info $$1=$1 $$2=$2 $$3=$3 $$4=$4)
+$(info $0 : $$1=$1 $$2=$2 $$3=$3 $$4=$4)
 module2cmi_$2 ::= $3
 modules += $2
 modsources += $1
@@ -59,8 +62,8 @@ split_four_column_list = $(foreach line,$1,\
   )\
 )
 
-# Escape $ with subst
-$(call split_four_column_list,$(subst $$,$$$$,$(SRC_MOD_CMI_IS-IF_LIST)))
+# Escape $ and # with subst
+$(call split_four_column_list,$(subst $$,$$$$,$(subst #,\#,$(SRC_MOD_CMI_IS-IF_LIST))))
 
 $(info modules = $(modules))
 $(info modsources = $(modsources))
@@ -69,8 +72,8 @@ $(foreach mod,$(modules),$(info module2cmi_$(mod) = $(module2cmi_$(mod))))
 $(info )
 
 # The function to define variables using named variables
-define split =
-$(info $$(src)=$(src) $$(mod)=$(mod) $$(cmi)=$(cmi) $$(is-if)=$(is-if))
+define split2 =
+$(info $0 : $$(src)=$(src) $$(mod)=$(mod) $$(cmi)=$(cmi) $$(is-if)=$(is-if))
 module2cmi2_$(mod) ::= $(cmi)
 modules2 += $(mod)
 modsources2 += $(src)
@@ -80,11 +83,11 @@ endef
 
 split_four_column_list = $(foreach line,$1,\
   $(let src mod cmi is-if,$(subst ;, ,$(line)),\
-    $(eval $(split))\
+    $(eval $(split2))\
   )\
 )
 
-$(call split_four_column_list,$(subst $$,$$$$,$(SRC_MOD_CMI_IS-IF_LIST)))
+$(call split_four_column_list,$(subst $$,$$$$,$(subst #,\#,$(SRC_MOD_CMI_IS-IF_LIST))))
 
 $(info modules2 = $(modules2))
 $(info modsources2 = $(modsources2))
@@ -95,7 +98,7 @@ $(info )
 # Variable definition direct in eval function
 split_four_column_list = $(foreach line,$1,\
   $(let src mod cmi is-if,$(subst ;, ,$(line)),\
-    $(info $$(src)=$(src) $$(mod)=$(mod) $$(cmi)=$(cmi) $$(is-if)=$(is-if))\
+    $(info $0 : $$(src)=$(src) $$(mod)=$(mod) $$(cmi)=$(cmi) $$(is-if)=$(is-if))\
     $(eval module2cmi3_$(mod) ::= $(cmi))\
     $(eval modules3 += $(mod))\
     $(eval modsources3 += $(src))\
@@ -104,7 +107,7 @@ split_four_column_list = $(foreach line,$1,\
 # NOTE: We must use $(src) but not $$(src) - The (local) variables src,mod.. are valid only when the eval
 # arguments are expanded. These local variables are undefined in the second step when the eval result is parsed!
 
-$(call split_four_column_list,$(subst $$,$$$$,$(SRC_MOD_CMI_IS-IF_LIST)))
+$(call split_four_column_list,$(subst $$,$$$$,$(subst #,\#,$(SRC_MOD_CMI_IS-IF_LIST))))
 
 $(info modules3 = $(modules3))
 $(info modsources3 = $(modsources3))

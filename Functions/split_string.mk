@@ -1,14 +1,11 @@
-# demon function
-# make -f split_string.mk
+# Demonstration of some functions
 
+# neq
+# tail
+# append_separator
 
-# call neq,param1,param2
-# Expands to 'true' if param1 and param2 are not equal or to the empty string otherwise
-neq = $(if $(subst $(2),,$(1)),true)
+# Usage: make -f split_string.mk
 
-# call tail,separator,wordlist
-# Expands to the rest of the word list that follows the separator word.
-tail = $(let first rest,$(2),$(if $(and $(rest),$(call neq,$(1),$(first))),$(call tail,$(1),$(rest)),$(rest)))
 
 comma:= ,
 empty:=
@@ -19,6 +16,22 @@ define nl :=
 
 
 endef
+
+# Expands to '1' if param1 and param2 are not equal or to the empty string otherwise
+# $1 must not be empty!
+# call neq,param1,param2
+neq = $(if $(subst $(2),,$(1)),1)
+
+$(info call neq,$$(empty),$$(empty) '$(call neq,$(empty),$(empty))')
+$(info call neq,aa,aa '$(call neq,aa,aa)')
+$(info call neq,aa, aa '$(call neq,aa, aa)')
+$(info call neq,$$(space),$$(space) '$(call neq,$(space),$(space))')
+$(info call neq,aa,    '$(call neq,aa,)')
+$(info call neq,,aa    '$(call neq,,aa)' !!!)
+
+# Expands to the rest of the word list that follows the separator word.
+# call tail,separator,wordlist
+tail = $(let first rest,$(2),$(if $(and $(rest),$(call neq,$(1),$(first))),$(call tail,$(1),$(rest)),$(rest)))
 
 teststring1 = -t -j18 --no-silent -- CXX=clang C--14=21
 teststring2 =
