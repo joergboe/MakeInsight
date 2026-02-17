@@ -1,4 +1,4 @@
-# Special functions
+# Special functions : value, origin, flavor, shell, !=
 
 # Usage: make -f 25_special_functions.mk ARG1=11
 

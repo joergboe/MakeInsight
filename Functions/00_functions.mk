@@ -1,4 +1,4 @@
-# Function syntax
+# Function syntax and function call
 
 # Usage: make -f 00_functions.mk
 

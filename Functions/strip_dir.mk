@@ -1,5 +1,6 @@
 # Demonstration:
 # Remove surplus slashes and remove single dot components from a directory string
+# Ensure directory end
 
 # Usage: make -f strip_dir.mk
 
@@ -8,7 +9,7 @@
 neq = $(or $(subst $2,,$1),$(subst $1,,$2))
 
 # Split a single directory string into list of directory components.
-# Removes surplus slashes and remove single dot compinents
+# Removes surplus slashes and remove single dot components
 # 
 # call split_reduce_dir directory
 split_reduce_dir = $(strip $(foreach d,$(subst /, ,$1),$(if $(call neq,.,$(d)),$(d))))
@@ -38,12 +39,18 @@ $(info list = $(list))
 $(info ****** split_reduce_dir)
 $(foreach directory,$(list),$(info $(directory))$(info '$(call split_reduce_dir,$(directory))'))
 
+$(info $$(call split_reduce_dir, ) = '$(call split_reduce_dir, )')
+
 $(info ****** strip_dir)
 $(foreach directory,$(list),$(info $(directory))$(info '$(call strip_dir,$(directory))'))
 
-# Append a slash to a string if it does not end with slash
-# call append_slash dir_list
-append_slash = $(foreach var,$1,$(if $(filter %/,$(var)),$(var),$(var)/))
+$(info $$(call strip_dir,) = '$(call strip_dir,)')
+$(info $$(call strip_dir, ) = '$(call strip_dir, )')
+$(info $$(call strip_dir,/ ) = '$(call strip_dir,/ )')
+
+# Make sure the string ends with a forward slash.
+# call ensure_dir_end dir_list
+ensure_dir_end = $(foreach var,$1,$(if $(filter %/,$(var)),$(var),$(var)/))
 
 empty :=
 space := $(empty) $(empty)
@@ -54,20 +61,20 @@ list3 = m1 m2 m3 m3
 list4 = . src . src src/m1
 list5 = m1 m2 m3 . src . src src/m1 m1
 
-$(info ****** append_slash)
+$(info ****** ensure_dir_end)
 $(info list1 = '$(list1)')
-$(info list1 = '$(call append_slash,$(list1))')
+$(info list1 = '$(call ensure_dir_end,$(list1))')
 
 $(info list1a = '$(list1a)')
-$(info list1a = '$(call append_slash,$(list1a))')
+$(info list1a = '$(call ensure_dir_end,$(list1a))')
 
 $(info list2 = '$(list2)')
-$(info list2 = '$(call append_slash,$(list2))')
+$(info list2 = '$(call ensure_dir_end,$(list2))')
 
 $(info list3 = '$(list3)')
-$(info list3 = '$(call append_slash,$(list3))')
+$(info list3 = '$(call ensure_dir_end,$(list3))')
 
 $(info list4 = '$(list4)')
-$(info list4 = '$(call append_slash,$(list4))')
+$(info list4 = '$(call ensure_dir_end,$(list4))')
 
 target:
