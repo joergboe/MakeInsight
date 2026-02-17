@@ -1,5 +1,8 @@
 # Basics of variable usage.
 
+# Usage:
+# make -f 10_variables.mk 
+
 # A variable is a name defined in a makefile to represent a string of text, called the variable’s value. These values
 # are substituted by explicit request into targets, prerequisites, recipes, and other parts of the makefile.
 # See: https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
