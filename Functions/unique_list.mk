@@ -57,7 +57,6 @@ $(info ****** uniq_list by shell)
 # Return the list with duplicates removed
 # Use sort -u command
 # call uniq list,input_name
-
 uniq = $(shell echo "$${$1}" | sort -u)
 
 # Prepare a make list for sort command
@@ -94,4 +93,33 @@ $(info list6 = '$(list6)')
 export list6_ ::= $(call prepare_list_for_sort,$(list6))
 $(info uniq  = '$(call uniq,list6_)')
 
+$(info ****** uniq_list by shell #2)
+
+# Return the list with duplicates removed
+# Use sort -u command
+# call uniq list,filename
+uniq = $(file > $2,$(subst $(space),$(nl),$(strip $1)))$(shell sort -u $2)
+
+$(info list1 = '$(list1)')
+$(info uniq  = '$(call uniq,$(list1),list1)')
+
+$(info list1a = '$(list1a)')
+$(info uniq   = '$(call uniq,$(list1a),list1a)')
+
+$(info list2 = '$(list2)')
+$(info uniq  = '$(call uniq,$(list2),list2)')
+
+$(info list3 = '$(list3)')
+$(info uniq  = '$(call uniq,$(list3),list3)')
+
+$(info list4 = '$(list4)')
+$(info uniq  = '$(call uniq,$(list4),list4)')
+
+$(info list5 = '$(list5)')
+$(info uniq  = '$(call uniq,$(list5),list5)')
+
+$(info list6 = '$(list6)')
+$(info uniq  = '$(call uniq,$(list6),list6)')
+
 target:
+	rm list*
