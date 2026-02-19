@@ -10,7 +10,6 @@ neq = $(or $(subst $2,,$1),$(subst $1,,$2))
 
 # Split a single directory string into list of directory components.
 # Removes surplus slashes and remove single dot components
-# 
 # call split_reduce_dir directory
 split_reduce_dir = $(strip $(foreach d,$(subst /, ,$1),$(if $(call neq,.,$(d)),$(d))))
 

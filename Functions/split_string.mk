@@ -17,17 +17,9 @@ define nl :=
 
 endef
 
-# Expands to '1' if param1 and param2 are not equal or to the empty string otherwise
-# $1 must not be empty!
+# Expands to non-empty string if param1 and param2 are not equal or to the empty string otherwise
 # call neq,param1,param2
-neq = $(if $(subst $(2),,$(1)),1)
-
-$(info call neq,$$(empty),$$(empty) '$(call neq,$(empty),$(empty))')
-$(info call neq,aa,aa '$(call neq,aa,aa)')
-$(info call neq,aa, aa '$(call neq,aa, aa)')
-$(info call neq,$$(space),$$(space) '$(call neq,$(space),$(space))')
-$(info call neq,aa,    '$(call neq,aa,)')
-$(info call neq,,aa    '$(call neq,,aa)' !!!)
+neq = $(or $(subst $2,,$1),$(subst $1,,$2))
 
 # Expands to the rest of the word list that follows the separator word.
 # call tail,separator,wordlist
@@ -43,6 +35,10 @@ teststring7 := $(space)-t -j18 --no-silent -- CXX=clang --C--14=21$(nl)53 CXX=g+
 teststring8 := -- CXX=clang --C--14=2153 CXX=g++
 teststring9 := --CXX=clang --C--14=2153 CXX=g++
 teststring10 =  -t -j18 --no-silent --
+teststring11 = $(space)
+
+# With teststring 11:
+# GNU Make 4.4.1 make: *** virtual memory exhausted
 
 $(foreach x,1 2 3 4 5 6 7 8 9 10,\
 $(info teststring$(x) = '$(teststring$(x))')\

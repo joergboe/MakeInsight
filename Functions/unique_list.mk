@@ -17,6 +17,12 @@ define nl ::=
 
 
 endef
+define multiline ::=
+line1
+line2
+line2
+
+endef
 
 list1 =
 list1a ::= $(space)
