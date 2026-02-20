@@ -58,7 +58,7 @@ $(info As woraround strip the input)
 
 # Reverse a list
 # call robust_reverse,list
-robust_reverse = $(call reverse_list,$(strip $1))
+robust_reverse = $(let first rest,$(strip $1),$(if $(rest),$(call reverse_list,$(rest)) )$(first))
 
 $(info $$(call robust_reverse,11 22 33 44 $$(comma)) = '$(call robust_reverse,11 22 33 44 $(comma))')
 
