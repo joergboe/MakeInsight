@@ -5,8 +5,8 @@
 # see: https://www.gnu.org/software/make/manual/html_node/Make-Control-Functions.html
 
 $(info -§1- Info function - $$(info text))
-$(info #This function does nothing more than print its (expanded) argument to standard output.)
-$(info #The result of the expansion of this function is the empty string.)
+$(info This function does nothing more than print its (expanded) argument to standard output.)
+$(info The result of the expansion of this function is the empty string.)
 
 #NOTE: $(info) without space is the expansion of variable info
 info = content of variable info

@@ -2,7 +2,7 @@
 
 # see: https://www.gnu.org/software/make/manual/make.html#Multiple-Rules
 # There can only be one recipe to be executed for a file. If more than one rule gives a recipe for the
-# same file, make uses the last one given and prints an error message. (As a special case, if the
+# same file, make uses the last one given and prints an warning message. (As a special case, if the
 # file’s name begins with a dot, no error message is printed. This odd behavior is only for compatibility
 # with other implementations of make… you should avoid using it).
 

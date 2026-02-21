@@ -1,5 +1,8 @@
-# try this example with
-# > make -i -f RuleExecutionOneShell.mk
+# Recipe execution using one shell
+
+# Usage:
+# > make -i -f 32_recipe_execution_one_shell.mk
+# > make -f 32_recipe_execution_one_shell.mk
 
 # Normally each line of a recipe starts a new shell. But you can start all lines in a
 # single shell with the special target .ONESHELL:
@@ -11,14 +14,24 @@
 # all recipe lines for each target will be provided to a single invocation of the shell.
 # Newlines between recipe lines will be preserved
 
-$(info $(.SHELLFLAGS))
 .ONESHELL:
+
+# These files must not exist
+$(shell rm -f all target*)
+
+$(info Default values)
+$(info SHELL = $(SHELL))
+$(info .SHELLFLAGS = $(.SHELLFLAGS))
+# NOTE: Unlike most variables, the variable SHELL is never set from the environment. This is because the SHELL
+# environment variable is used to specify your personal choice of shell program for interactive use.
+
 .PHONY: all
 all : target3
 	@echo -e '--- rule all\nAll done!!!\n'
 
 target1:
-	echo '--- rule1: run in one shell ---'
+	@echo '--- rule1: run in one shell ---'
+	echo \$$0=$$0
 	echo 'The change of the directory is effective in following lines of the recipe.'
 	pwd
 	cd ..
@@ -38,8 +51,8 @@ target2: target1
 	echo pid=$$$$
 	echo The shell command is:
 	echo \$$0=$$0
-	@echo If the shell is determied a POSIX-shell, the special prefix characters \
-	in “internal” recipe lines will be removed before the recipe is processed.
+	@echo If the shell is determied a POSIX-shell, the special prefix characters\
+	 in “internal” recipe lines will be removed before the recipe is processed.
 	echo
 
 # Special care must be taken to propagate possible errors in one line to the
@@ -47,9 +60,10 @@ target2: target1
 # Use .SHELLFLAGS = -ce for shells like sh or bash
 SHELL = /usr/bin/bash
 .SHELLFLAGS = -ce
+# NOTE: These assignments are executed before the rules are processed!
 
 target3: target2
 	@echo '--- rule3 : provoke an error in one line ---'
-	echo 'Use command line option -i to finalize the script'
+	echo -e 'Use command line option -i to finalize the script\n'
 	false
 	echo '!!! This line is never reached!!!'
