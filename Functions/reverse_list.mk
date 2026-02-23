@@ -41,24 +41,39 @@ $(info $$(call reverse_list,$$(list6)) = '$(call reverse_list,$(list6))')
 # NOTE: Newlines and tabs are replaced by spaces!
 $(info )
 
-$(info Pretty reverse list yields additional spaces)
+$(info Pretty format of reverse list yields additional spaces)
 
-# Reverse a list
+# Reverse a list - pretty format
 # call pretty_reverse,list
 pretty_reverse = $(let first rest,$1,\
-		$(if $(rest),\
-			$(call pretty_reverse,$(rest))\
-		)$(first)\
+	$(if $(rest),\
+		$(call pretty_reverse,$(rest))\
+	)$(first)\
 )
 
 $(info $$(call pretty_reverse,11 22 33 44 $$(comma)) = '$(call pretty_reverse,11 22 33 44 $(comma))')
 $(info )
 
-$(info As woraround strip the input)
+$(info Dollar sign trick removes additional spaces)
+
+# Reverse a list - pretty format with dollar sign trick
+# call pretty_reverse,list
+pretty_reverse = $(let first rest,$1,$\
+	$(if $(rest),$\
+		$(call pretty_reverse,$(rest))\
+	)$(first)$\
+)
+# There is no $ after the recursive call with rest. There is a single space needed.
+
+$(info $$(call pretty_reverse,11 22 33 44 $$(comma)) = '$(call pretty_reverse,11 22 33 44 $(comma))')
+$(info )
+
+
+$(info Makefile error workaround - strip the input)
 
 # Reverse a list
 # call robust_reverse,list
-robust_reverse = $(let first rest,$(strip $1),$(if $(rest),$(call reverse_list,$(rest)) )$(first))
+robust_reverse = $(call pretty_reverse,$(strip $1))
 
 $(info $$(call robust_reverse,11 22 33 44 $$(comma)) = '$(call robust_reverse,11 22 33 44 $(comma))')
 

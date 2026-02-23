@@ -8,7 +8,13 @@
 uniq_list = $(call uniq_list_,$(strip $1))
 
 # Internal function called from uniq_list
-uniq_list_ = $(let first rest,$1,$(first)$(if $(rest), $(call uniq_list_,$(filter-out $(first),$(rest)))))
+uniq_list_ = $(let first rest,$1,$\
+	$(first)$\
+	$(if $(rest),\
+		$(call uniq_list_,$(filter-out $(first),$(rest)))$\
+	)$\
+)
+# Before the recursive call of uniq_list_ is a space required so there is no dollar sign at the end of line 3
 
 # some required variables
 empty ::=
@@ -54,7 +60,7 @@ $(info uniq  = '$(call uniq_list,$(list4))')
 $(info list5 = '$(list5)')
 $(info uniq  = '$(call uniq_list,$(list5))')
 
-$(info list5 = '$(list5)')
+$(info list6 = '$(list6)')
 $(info uniq  = '$(call uniq_list,$(list6))')
 
 

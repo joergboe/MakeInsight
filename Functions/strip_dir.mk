@@ -30,18 +30,23 @@ make_abs_dir = /$(if $1,$(let d1 rest,$1,$(d1)$(if $(rest),$(call append_dir,$(r
 
 # Remove surplus slashes and remove single dot components from a single directory.
 # call strip_dir directory
-strip_dir = $(if $(filter /%,$1),$(call make_abs_dir,$(call split_reduce_dir,$1)),$(call make_rel_dir,$(call split_reduce_dir,$1)))
+strip_dir = $(if $(filter /%,$1),$\
+	$(call make_abs_dir,$(call split_reduce_dir,$1))$\
+,$\
+	$(call make_rel_dir,$(call split_reduce_dir,$1))$\
+)
 
-list = file file%1 file\#1 . ./ .//. src/ ./src//pa*rt1 ../srcabs(1)/ ./../srcabs{2// ../MakeSnippets/// /opt//xxx //.//./. /
+list = file file%1 file\#1 . ./ .//. src/ ./src//pa*rt1 ../srcabs(1)/ ./../srcabs{2// ../MakeSnippets/// /opt//xxx \
+	//.//./. /
 $(info list = $(list))
 
 $(info ****** split_reduce_dir)
-$(foreach directory,$(list),$(info $(directory))$(info '$(call split_reduce_dir,$(directory))'))
+$(foreach directory,$(list),$(info $(directory) = '$(call split_reduce_dir,$(directory))'))
 
 $(info $$(call split_reduce_dir, ) = '$(call split_reduce_dir, )')
 
 $(info ****** strip_dir)
-$(foreach directory,$(list),$(info $(directory))$(info '$(call strip_dir,$(directory))'))
+$(foreach directory,$(list),$(info $(directory) = '$(call strip_dir,$(directory))'))
 
 $(info $$(call strip_dir,) = '$(call strip_dir,)')
 $(info $$(call strip_dir, ) = '$(call strip_dir, )')
@@ -61,19 +66,14 @@ list4 = . src . src src/m1
 list5 = m1 m2 m3 . src . src src/m1 m1
 
 $(info ****** ensure_dir_end)
-$(info list1 = '$(list1)')
-$(info list1 = '$(call ensure_dir_end,$(list1))')
+$(info list1 = '$(list1)' ensure_dir_end = '$(call ensure_dir_end,$(list1))')
 
-$(info list1a = '$(list1a)')
-$(info list1a = '$(call ensure_dir_end,$(list1a))')
+$(info list1a = '$(list1a)' ensure_dir_end = '$(call ensure_dir_end,$(list1a))')
 
-$(info list2 = '$(list2)')
-$(info list2 = '$(call ensure_dir_end,$(list2))')
+$(info list2 = '$(list2)' ensure_dir_end = '$(call ensure_dir_end,$(list2))')
 
-$(info list3 = '$(list3)')
-$(info list3 = '$(call ensure_dir_end,$(list3))')
+$(info list3 = '$(list3)' ensure_dir_end = '$(call ensure_dir_end,$(list3))')
 
-$(info list4 = '$(list4)')
-$(info list4 = '$(call ensure_dir_end,$(list4))')
+$(info list4 = '$(list4)' ensure_dir_end = '$(call ensure_dir_end,$(list4))')
 
 target:

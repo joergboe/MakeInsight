@@ -47,7 +47,9 @@ neq = $(or $(subst $2,,$1),$(subst $1,,$2))
 # error: make: *** virtual memory exhausted
 # in GNU Make 4.4.1 if called with a single space as input
 # Prevented with $(strip $1)
-reverse_list = $(let first rest,$(strip $1),$(if $(rest),$(call reverse_list,$(rest)) )$(first))
+reverse_list = $(call reverse_list_,$(strip $1))
+# Internal function
+reverse_list_ = $(let first rest,$(strip $1),$(if $(rest),$(call reverse_list_,$(rest)) )$(first))
 
 # Split a single directory string into list of directory components.
 # Removes surplus slashes and remove single dot components
@@ -63,18 +65,18 @@ reverse_list_to_dir = $(subst $(space),/,$(strip $(call reverse_list,$1 $2)))
 # call breakdown_reverse_dir,list
 # Prevented bug with $(strip $1) (Remove additional spaces comming from pretty function format)
 breakdown_reverse_dir = $(let first rest,$(strip $1),\
-  $(call reverse_list_to_dir,$(first),$(rest))\
-  $(if $(rest), $(call breakdown_reverse_dir,$(rest))))
+	$(call reverse_list_to_dir,$(first),$(rest))\
+	$(if $(rest), $(call breakdown_reverse_dir,$(rest))))
 
 # Break down a directory path into components that are needed one after the other to create the directory
 # The directory must be a relative directory.
 # call directory_break_down1,directory
 directory_break_down1 = $(call reverse_list,\
-  $(call breakdown_reverse_dir,\
-    $(call reverse_list,\
-      $(call split_reduce_dir,$1)\
-    )\
-  )\
+	$(call breakdown_reverse_dir,\
+		$(call reverse_list,\
+			$(call split_reduce_dir,$1)\
+		)\
+	)\
 )
 
 target = cache/header/part1/part2/file.xx
@@ -85,18 +87,18 @@ $(info dir = $(dir))
 
 $(info reverse_list_to_dir = '$(call reverse_list_to_dir,part2,part1 header cache)')
 $(info split_reduce_dir = $(call split_reduce_dir,$(dir)))
-$(info reverse_ $(call reverse_list,$(call split_reduce_dir,$(dir))))
+$(info reverse $(call reverse_list,$(call split_reduce_dir,$(dir))))
 $(info breakdown_reverse_dir '$(call breakdown_reverse_dir,$(call reverse_list,$(call split_reduce_dir,$(dir))))')
 $(info directory_break_down1 = '$(call directory_break_down1,$(dir))')
 
 # Alternative using a global variable and eval
-directory_break_down2 = $(eval temp ::=)\
-$(foreach var,$(call split_reduce_dir,$(subst #,\#,$(subst $$,$$$$,$1))),\
-  $(if $(temp),\
-    $(eval temp += $(var)),\
-    $(eval temp ::= $(var))\
-  )\
-  $(subst $(space),/,$(temp))\
+directory_break_down2 = $(eval temp ::=)$\
+$(foreach var,$(call split_reduce_dir,$(subst #,\#,$(subst $$,$$$$,$1))),$\
+	$(if $(temp),$\
+		$(eval temp += $(var)),$\
+		$(eval temp ::= $(var))$\
+	)$\
+	$(subst $(space),/,$(temp))$\
 )
 # NOTE: Substitution for eval lacks support for combination \#
 # NOTE: temp += $(var) produces a space separated list
