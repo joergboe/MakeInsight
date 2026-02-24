@@ -1,7 +1,7 @@
 # Targets of chained implicit rules are intermediate by default.
 # A file is not intermediate if it is mentioned in the makefile as a target or prerequisite.
 # You can explicitly mark a file as intermediate by listing it as a prerequisite of the special
-# target .INTERMEDIATE. This takes effect even if the file is mentioned explicitly in some other way. 
+# target .INTERMEDIATE. This takes effect even if the file is mentioned explicitly in some other way.
 
 # see: https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
 

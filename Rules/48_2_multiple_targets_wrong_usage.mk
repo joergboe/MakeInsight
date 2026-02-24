@@ -7,6 +7,7 @@
 # The module user main.cpp
 # The compiler places the objects into the *.o files
 # For module Hello the Module Interface is placed in Hello.pcm
+# Hello.pcm is required to build main.o
 
 # Usage:
 # make -f 48_2_multiple_targets_wrong_usage.mk -j 1

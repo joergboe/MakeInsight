@@ -25,7 +25,7 @@
 # Usage: make -f 45_order_only_prerequisites.mk
 # Cleanup:make -f 45_order_only_prerequisites.mk clean
 
-# Make maintaines the right order of rule execution also in case of paralel build
+# Make maintains the right order of rule execution also in case of parallel build
 # Usage: make -f 45_order_only_prerequisites.mk -j 4
 # Cleanup:make -f 45_order_only_prerequisites.mk clean
 

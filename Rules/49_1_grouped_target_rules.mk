@@ -14,7 +14,7 @@
 #          make -f 49_1_grouped_target_rules.mk
 #          # run rule 'res1 res2 res3' - $@ is res1 - $?: f1
 
-#          #          echo "Appendix" >> f2
+#          echo "Appendix" >> f2
 #          make -f 49_1_grouped_target_rules.mk
 #          # run rule 'res1 res2 res3' - $@ is res1 - $?: f2
 

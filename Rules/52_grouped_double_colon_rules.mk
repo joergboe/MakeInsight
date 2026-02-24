@@ -27,7 +27,7 @@ all: res1 res2 res3
 
 res1 res2 &:: f1
 	@echo -e "\n---- run res1 res2 &::f1 ----"
-	@echo "Triggered by \$$@: $@"
+	@echo "Triggered by \$$@: $@ - $?@: $?"
 	echo "f1 used for generating: res1" > res1
 	cat $< >> res1
 	echo "f1 used for generating: res2" > res2
@@ -35,7 +35,7 @@ res1 res2 &:: f1
 
 res2 res3 &:: f2
 	@echo -e "\n---- run res2 res3 &::f2 ----"
-	@echo "Triggered by \$$@: $@"
+	@echo "Triggered by \$$@: $@ - $?@: $?"
 	echo "f2 used for generating: res2" > res2
 	cat $< >> res2
 	echo "f2 used for generating: res3" > res3
