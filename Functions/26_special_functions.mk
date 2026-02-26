@@ -34,11 +34,16 @@ $(info -§2- The assignment !=)
 # The shell assignment operator ‘!=’ can be used to execute a shell script and set a variable to its output.
 
 CMD = for X in 1 2 3; do echo item$$X; done
+from_shell ::= 0
 from_shell != $(CMD)
 $(info from_shell = '$(from_shell)')
 # NOTE: The final newline is removed if any.
 
 $(info -§5a- Now the variable has flavor = '$(flavor from_shell)')
+# NOTE: If the result of the execution could produce a $, and you don’t intend what follows that to be interpreted as a 
+#       make variable or function reference, then you must replace every $ with $$ as part of the execution.
+#       Alternatively, you can set a simply expanded variable to the result of running a program using the shell
+#       function call.
 
 $(info -§5b- The return result of the shell invokation is in variable .SHELLSTATUS)
 $(info .SHELLSTATUS = '$(.SHELLSTATUS)')

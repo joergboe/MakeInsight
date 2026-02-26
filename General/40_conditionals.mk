@@ -84,6 +84,7 @@ $(info -§2- Conditional Directive - ifneq (arg1, arg2))
 
 foo ::= string
 $(info -§2a- Extra spaces and comments are allowed in all 4 Conditionals.)
+target:
   ifneq '$(foo)' '$(bar)'		# Conditional with indention
     $(error This must not happen!)
   else			# Comment
@@ -149,5 +150,3 @@ endif
 
 # NOTE: make evaluates conditionals when it reads a makefile. Consequently, you cannot use automatic variables in the
 #       tests of conditionals because they are not defined until recipes are run.
-
-target:

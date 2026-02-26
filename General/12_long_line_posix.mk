@@ -1,6 +1,6 @@
 # Processing of continuation lines in make syntax POSIX compliant
 
-# usage: make -f long_line_posix.mk
+# usage: make -f 12_long_line_posix.mk
 
 # see: https://www.gnu.org/software/make/manual/html_node/Splitting-Lines.html
 

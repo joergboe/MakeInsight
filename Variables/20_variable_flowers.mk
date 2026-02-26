@@ -177,6 +177,15 @@ $(info expansions - x=$(x) xs=$(xs) xi=$(xi) z=$(z))
 $(info flavors - x=$(flavor x) xs=$(flavor xs) xi=$(flavor xi) z=$(flavor z))
 $(info )
 
+# The operator '?=' is a shorthand for:
+# ifeq ($(origin FOO), undefined)
+# FOO = bar
+# endif
+FOO =
+FOO ?= new
+$(info If FOO was empty but defined after assignment FOO ?= bar is '$(FOO)')
+$(info )
+
 $(info Append '$$(z)')
 y += $(z)
 ys += $(z)
@@ -190,6 +199,17 @@ $(info expansion of z = $(z))
 $(info expansions - y=$(y) ys=$(ys) yi=$(yi) z=$(z))
 $(info Note: Variable yi is considered a recursive variable; when you append to it with ‘+=’ the value on the)
 $(info right-hand side is not expanded immediately!)
+$(info )
+
+$(info Append to an empty var)
+FOO =
+FOO += bar
+$(info If FOO was empty but defined after assignment FOO ?= bar is '$(FOO)')
+empty ::=
+space ::= $(empty) $(empty)
+FOO = $(space)
+FOO += bar
+$(info If FOO was a single space assignment FOO ?= bar is '$(FOO)')
 $(info )
 
 # A disadvantage of recursively expanded variables is that any functions referenced in the definition will be
