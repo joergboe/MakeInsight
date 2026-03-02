@@ -33,19 +33,13 @@ neq = $(or $(subst $2,,$1),$(subst $1,,$2))
 
 # Sort the input list and remove duplicated from the output
 # call sort_uniq,list
-sort_uniq = $(call sort_uniq_1,$(sort $1),)
-
-# Internal function add a distinct first element to input list
-sort_uniq_1 = $(call sort_uniq_2,$(firstword $1)& $1)
-
+sort_uniq = $(call sort_uniq_,$(sort $1),)
 # Internal function
-sort_uniq_2 = $(let old first rest,$1,$\
-	$(if $(call neq,$(first),$(old)),$\
-		$(first)\
-	)$\
-	$(if $(rest),$\
-		$(call sort_uniq_2,$(first) $(rest))$\
-	)$\
+# Parameters: $1 - sorted list
+#             $2 - previous element, empty on step 1
+sort_uniq_ = $(let first rest,$1,$\
+	$(if $(call neq,$(first),$2),$(if $2, )$(first))$\
+	$(if $(rest),$(call sort_uniq_,$(rest),$(first),$3))$\
 )
 
 $(info ****** sort_uniq)
