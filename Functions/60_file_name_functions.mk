@@ -8,7 +8,8 @@ empty =
 
 $(info -§1- Dir Function $$(dir names…) - Extracts the directory-part of each file name in names.)
 
-$(info -§1a- $$(dir src/foo.c hacks /bin/bash /opt/mktsimple) = '$(dir src/foo.c hacks /bin/bash /opt/mktsimple)')
+$(info -§1a- $$(dir src/foo.c hacks /bin/bash /opt/mktsimple /opt/mktsimple/) =\
+  '$(dir src/foo.c hacks /bin/bash /opt/mktsimple /opt/mktsimple/)')
 # NOTE:  The directory-part of the file name is everything up through (and including) the last slash in it. If the file
 # name contains no slash, the directory part is the string ‘./’.
 
@@ -17,8 +18,7 @@ $(info -§1b- Empty list $$(dir $$(empty)) = '$(dir $(empty))')
 $(info -§1c- Dir up $$(dir ../src/src.cpp ./../src/src.cpp src/../src2/f1.cpp) =\
   '$(dir ../src/src.cpp ./../src/src.cpp src/../src2/f1.cpp)')
 
-$(info -§1d- Dots only $$(dir . ./ .. ../ ./src ../src) = '$(dir . ./ .. ../ ./src ../src)')
-# NOTE: Error with .. GNU Make 4.4.1
+$(info -§1d- Dots only $$(dir . ./ .. ../ ../.. ../../ ./src ../src) = '$(dir . ./ .. ../ ../.. ../../ ./src ../src)')
 $(info )
 
 $(info -§2- Notdir Function $$(notdir names…) - Extracts all but the directory-part of each file name in names.)
@@ -107,15 +107,21 @@ $(info $$(wildcard src/headers/../../foo_bar) = '$(wildcard src/headers/../../fo
 $(info )
 
 $(info -§9- Realpath Function $$(realpath names…) - For each file name in names return the canonical absolute name.)
-$(info -§9a- File must exist $$(realpath 00_functions.mk ./src/headers/../10_text_functions.mk hacks) =\
-  '$(realpath 00_functions.mk ./src/headers/../../10_text_functions.mk hacks)')
+$(info -§9a- File must exist $$(realpath 00_functions.mk ./src/headers/../../10_text_functions.mk hacks ..) =\
+  '$(realpath 00_functions.mk ./src/headers/../../10_text_functions.mk hacks ..)')
 # NOTE: Function realpath follows symlinks
+$(info -§9b- Realpath follows symlinks $$(realpath src/headers/link) = '$(realpath src/headers/link)')
 $(info )
 
 $(info -§10- Abspath Function $$(abspath names…) - For each file name in names return the canonical absolute name.)
-$(info -§10a- File may exist $$(abspath 00_functions.mk ./src/headers/../10_text_functions.mk hacks ../../notexists/./file.cpp) =\
-  '$(abspath 00_functions.mk ./src/headers/../../10_text_functions.mk hacks ../../notexists/./file.cpp)')
+$(info -§10a- File may exist\
+  $$(abspath 00_functions.mk ./src/headers/../../10_text_functions.mk hacks ../../notexists/./file.cpp ..) =\
+  '$(abspath 00_functions.mk ./src/headers/../../10_text_functions.mk hacks ../../notexists/./file.cpp ..)')
+$(info -§10b- No ~ wildcard! $$(abspath ~ ~/git) = '$(abspath ~ ~/git)')
+$(info -§10c- Final / is removed. $$(abspath /home/alice /home/alice/ alice alice/ ) =\
+                                  '$(abspath /home/alice /home/alice/ alice alice/ )')
 # NOTE: Function abspath does not follow symlinks
+$(info -§10d- Abspath does not follow symlinks $$(abspath src/headers/link) = '$(abspath src/headers/link)')
 $(info )
 
 target:
