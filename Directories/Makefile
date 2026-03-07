@@ -7,9 +7,13 @@
 # NOTE that setting this variable has no impact on the operation of make it does not cause make to change its working
 # directory.
 
+# Usage: make
 # Use CURDIR to get the current directory.
 # Variable PWD in make context may differ.
 # Shells started from make have the correct PWD set.
+
+#Usage CURDIR=XXX make
+# Make overwrites the value of CURDIR
 
 $(info )
 $(info CURDIR=$(CURDIR) origin=$(origin CURDIR) flavor=$(flavor CURDIR))
@@ -19,6 +23,9 @@ $(info )
 
 maintarget: subdir/target1 subdir/target2 subdir/target2 subdir/target3
 	@echo '---- rule maintarget ----'
+	command pwd
+	echo $$PWD
+	echo "CURDIR='$${CURDIR}'"
 
 subdir/target1:
 	@echo '---- rule subdir/target1 ----'

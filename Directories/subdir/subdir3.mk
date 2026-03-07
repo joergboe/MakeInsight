@@ -11,3 +11,4 @@ subdir/target3:
 	@echo '---- run rule target3 ----'
 	command pwd
 	echo $$PWD
+	echo "CURDIR='$${CURDIR}'"

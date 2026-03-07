@@ -11,3 +11,4 @@ target2:
 	@echo '---- run rule target2 ----'
 	command pwd
 	echo $$PWD
+	echo "CURDIR='$${CURDIR}'"
