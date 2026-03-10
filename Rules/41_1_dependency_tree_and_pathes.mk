@@ -6,7 +6,7 @@
 # > make -f 41_1_dependency_tree_and_pathes.mk clean
 
 # For the creation of the dependency tree make uses the targets and prerequisites almost literally.
-# It does Specifically, it does not canonize the path.
+# Specifically, it does not canonize the path.
 # Exception: Only leading ./ Dot components are removed.
 
 $(shell ln -s target2 target_ln; ln -s src/fl1 ln1; ln -s src/fl2 ln2;)

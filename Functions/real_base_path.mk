@@ -16,9 +16,12 @@ real_base_path = $(abspath $(foreach dir,$2,$(if $(patsubst /%,,$(dir)),,$(dir))
 $(info CURDIR = '$(CURDIR)')
 $(info )
 
-list = /usr/bin /opt/../usr/bin ./src ../aa/bb/cc /home/joergboe
+list = /usr/bin /opt/../usr/bin ./src src1.cpp build ../aa/bb/cc /home/joergboe . ./
 
 $(info list = '$(list)')
 $(info real_base_path = '$(call real_base_path,/home,$(list))')
+
+$(info list = '$(list)')
+$(info real_base_path = '$(call real_base_path,$(CURDIR),$(list))')
 
 target:

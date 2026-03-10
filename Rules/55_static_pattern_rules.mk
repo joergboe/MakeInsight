@@ -41,8 +41,10 @@
 #      step2: f1.o f2.o f3.o
 #      step3: target
 
-sources = f1.src f2.src f3.src
-objects = f1.o f2.o f3.o
+sources = f1.src f2.src f3.src .src
+objects = f1.o f2.o f3.o .o
+
+# NOTE: The wildcard % may match the empty string, but this makes usually no sense.
 
 # build the final target
 target: $(objects)
