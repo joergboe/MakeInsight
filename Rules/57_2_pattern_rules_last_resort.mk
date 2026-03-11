@@ -7,11 +7,11 @@
 
 # See: https://www.gnu.org/software/make/manual/html_node/Match_002dAnything-Rules.html
 
-# Usage:   make -f 57_2_pattern_rules.mk
+# Usage:   make -f 57_2_pattern_rules_last_resort.mk
 # Expect:  Successfully build of target
-# Cleanup: make -f 57_2_pattern_rules.mk clean
+# Cleanup: make -f 57_2_pattern_rules_last_resort.mk clean
 
-# Usage:   make -f 57_2_pattern_rules.mk LAST_RESSORT=1
+# Usage:   make -f 57_2_pattern_rules_last_resort.mk LAST_RESSORT=1
 # Expect:  Fails to build target: make: *** No rule to make target 'f1.o', needed by 'target'.  Stop.
 
 sources ::= f1.src f2.src
@@ -61,6 +61,6 @@ clean:
 	@echo
 .PHONY: clean
 
-57_2_pattern_rules.mk:;
-# NOTE: This target is added to prevent make to search for a rule to update the makefile 57_2_pattern_rules.mk
+57_2_pattern_rules_last_resort.mk:;
+# NOTE: This target is added to prevent make to search for a rule to update the makefile 57_2_pattern_rules_last_resort.mk
 # NOTE: This rule must have at least an empty recipe!

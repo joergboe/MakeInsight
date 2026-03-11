@@ -1,4 +1,4 @@
-# Static Pattern Rules - Files are not in CURDIR
+# Pattern Rules - Files are not in CURDIR
 
 # Usage:   make -f 58_1_pattern_rules_dir.mk
 # Expected: directories src and build are created and target is built.
