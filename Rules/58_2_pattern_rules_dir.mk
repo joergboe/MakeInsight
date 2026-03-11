@@ -13,10 +13,10 @@
 # Cleanup: make -f 58_2_pattern_rules_dir.mk clean NO_DIR=1
 
 ifdef NO_DIR
-builddir ::= .
+  builddir ::= .
 else
-builddir ::= build
-$(shell mkdir $(builddir))
+  builddir ::= build
+  $(shell mkdir $(builddir))
 endif
 
 sources = $(addprefix $(builddir)/,f1.src f2.src)
@@ -25,24 +25,28 @@ objects = $(addprefix $(builddir)/,f1.o f2.o)
 
 # build the final target
 $(builddir)/target: $(objects)
-	@echo -e "\n--- run rule $@ : $^ ---"
+	@echo "--- run final rule $@ : $^ ---"
 	touch $@
+	@echo
 
 # Create the 'object files in build directory'
 %.o : %.src conf
-	@echo -e "\n--- run rule $@ : $^ ---"
+	@echo "--- run 'object' rule $@ : $^ ---"
 	@echo "pattern stem \$$* : $*"
 	touch $@
+	@echo
 
 # Create the 'source' files
 %.src :
-	@echo -e "\n--- run rule $@ ---"
+	@echo "--- run 'source' rule $@ ---"
 	@echo "pattern stem \$$* : $*"
 	touch $@
+	@echo
 
 conf:
-	@echo -e "\n--- run rule $@ ---"
+	@echo "--- run rule $@ ---"
 	touch $@
+	@echo
 
 # cleanup all artifacts
 clean:
@@ -51,6 +55,7 @@ clean:
 ifndef NO_DIR
 	-rmdir $(builddir)
 endif
+	@echo
 .PHONY: clean
 
 58_2_pattern_rules_dir.mk:;

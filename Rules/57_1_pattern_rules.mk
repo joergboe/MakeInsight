@@ -1,5 +1,17 @@
 # Pattern Rules - Implicit Rules
 
+# You define an implicit rule by writing a pattern rule. A pattern rule looks like an ordinary rule, except that its
+# target contains the character ‘%’ (exactly one of them). The target is considered a pattern for matching file names;
+# the ‘%’ can match any nonempty substring, while other characters match only themselves. The prerequisites likewise
+# use ‘%’ to show how their names relate to the target name.
+
+# Thus, a pattern rule ‘%.o : %.c’ says how to make any file stem.o from another file stem.c.
+
+# NOTE: that expansion using ‘%’ in pattern rules occurs after any variable or function expansions, which take place
+# when the makefile is read.
+
+# See: https://www.gnu.org/software/make/manual/html_node/Pattern-Rules.html
+
 # Usage:   make -f 57_1_pattern_rules.mk
 # Expect:  Successfully build of target
 # Cleanup: make -f 57_1_pattern_rules.mk clean
@@ -9,41 +21,48 @@
 # Expect:  Fails to build target
 # Cleanup: make -f 57_1_pattern_rules.mk ZERO_STEM=1 clean
 
-sources ::= f1.src f2.src f3.src .src
-objects ::= f1.o f2.o f3.o
+sources ::= f1.src f2.src
+objects ::= f1.o f2.o
 
 ifdef ZERO_STEM
-sources += .src
-objects += .o
+  sources += .src
+  objects += .o
 endif
-
+$(info sources = '$(sources)')
+$(info objects = '$(objects)')
+$(info )
 
 # build the final target
 target: $(objects)
-	@echo -e "\n--- run rule $@ : $^ ---"
-	cat $^ > $@
+	@echo "--- run final rule $@ : $^ ---"
+	touch $@
+	@echo
 
 # Create the 'object' files
 
 %.o : %.src conf
-	@echo -e "\n--- run rule $@ : $^ ---"
+	@echo "--- run 'object' rule $@ : $^ ---"
 	@echo "pattern stem \$$* : $*"
-	cat $^ > $@
+	touch $@
+	@echo
 
 # Create the 'source' files
 %.src :
-	@echo -e "\n--- run rule $@ ---"
+	@echo "--- run 'source' rule $@ ---"
 	@echo "pattern stem \$$* : $*"
-	echo "Text $@" > $@
+	touch $@
+	@echo
 
 conf:
-	@echo -e "\n--- run rule $@ ---"
+	@echo "--- run rule $@ ---"
 	echo "Configuration" > $@
+	@echo
 
 # cleanup all artifacts
 clean:
 	@echo "--- run rule $@ ---"
 	rm -rfv target $(sources) $(objects) conf
+	@echo
 .PHONY: clean
 
 57_1_pattern_rules.mk:;

@@ -20,6 +20,7 @@
 #          make -f 50_double_colon_rules.mk # target triggered by f1
 #          touch f2
 #          make -f 50_double_colon_rules.mk # target triggered by f2
+#          make -f 50_double_colon_rules.mk # target rule is not triggered
 # Cleanup: make -f 50_double_colon_rules.mk clean
 
 all: target

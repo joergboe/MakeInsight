@@ -46,7 +46,7 @@ ifdef NOTI
 .NOTINTERMEDIATE: %.o
 endif
 
-# remove buildin rule %: %.c
+# remove builtin rule %: %.c
 %: %.c
 
 .PHONY: run
