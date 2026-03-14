@@ -1,8 +1,13 @@
 # Recipe execution using one shell
 
-# Usage:
-# > make -i -f 32_recipe_execution_one_shell.mk
-# > make -f 32_recipe_execution_one_shell.mk
+# Usage: > make -f 32_recipe_execution_one_shell.mk
+# Result: All rules are executed! In rule3 the provoked error is ignored and the point after the error is reached.
+
+# Usage: > make -f 32_recipe_execution_one_shell.mk ERROR_EXIT=1
+# Result: The execution is stopped in rule3. The point after the error is not reached.
+
+# > make --ignore-errors --file=32_recipe_execution_one_shell.mk ERROR_EXIT=1
+# Result: All rules are executed! The execution is stopped in rule3.
 
 # Normally each line of a recipe starts a new shell. But you can start all lines in a
 # single shell with the special target .ONESHELL:
@@ -24,6 +29,16 @@ $(info SHELL = $(SHELL))
 $(info .SHELLFLAGS = $(.SHELLFLAGS))
 # NOTE: Unlike most variables, the variable SHELL is never set from the environment. This is because the SHELL
 # environment variable is used to specify your personal choice of shell program for interactive use.
+
+# Special care must be taken to propagate possible errors in one line to the
+# exit status of the shell
+# Use .SHELLFLAGS = -ce for shells like sh or bash
+ifndef ERROR_EXIT
+  .SHELLFLAGS = -c
+else
+  .SHELLFLAGS = -ce
+endif
+
 
 .PHONY: all
 all : target3
@@ -54,13 +69,6 @@ target2: target1
 	@echo If the shell is determied a POSIX-shell, the special prefix characters\
 	 in “internal” recipe lines will be removed before the recipe is processed.
 	echo
-
-# Special care must be taken to propagate possible errors in one line to the
-# exit status of the shell
-# Use .SHELLFLAGS = -ce for shells like sh or bash
-SHELL = /usr/bin/bash
-.SHELLFLAGS = -ce
-# NOTE: These assignments are executed before the rules are processed!
 
 target3: target2
 	@echo '--- rule3 : provoke an error in one line ---'

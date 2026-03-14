@@ -20,6 +20,9 @@ space
 	space
 	@echo one\
 	 space
-	@echo 'hello \
+	@echo one\
+ space
+	##########
+	echo 'hello \
 	world' ; echo "hello \
     world"

@@ -8,7 +8,7 @@
 # These files must not exist
 $(shell rm -f all target*)
 
-# print a sigle $ sign
+# print a single $ sign
 $(info $$)
 
 all: target6
