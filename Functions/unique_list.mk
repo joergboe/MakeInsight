@@ -66,7 +66,9 @@ $(info uniq  = '$(call uniq_list,$(list6))')
 
 $(info ****** uniq_list by shell)
 
-# Return the list with duplicates removed
+# NOTE: The make function sort removes duplicates.
+
+# Experimental: Return the list with duplicates removed
 # Use sort -u command
 # call uniq list,input_name
 uniq = $(shell echo "$${$1}" | sort -u)
