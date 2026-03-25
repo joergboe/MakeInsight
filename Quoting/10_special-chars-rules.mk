@@ -2,16 +2,16 @@
 
 # Usage:
 # Demonstration of rules to generates files with special characters
-# make -f special-chars-rules.mk
+# make -f 10_special-chars-rules.mk
 
 # Check that all files are recognized as up to date.
 # Expected: Nothing to be done for 'all'.
-# make -f special-chars-rules.mk
+# make -f 10_special-chars-rules.mk
 
 # Show the generated files
-# make -f special-chars-rules.mk show
+# make -f 10_special-chars-rules.mk show
 # Cleanup
-# make -f special-chars-rules.mk clean
+# make -f 10_special-chars-rules.mk clean
 
 
 ifneq (,$(findstring show,$(MAKECMDGOALS)))
@@ -44,12 +44,14 @@ ifneq (,$(findstring show,$(MAKECMDGOALS)))
   $(info No direct escaping possible for characters: = and ; )
   $(info filesp5\=s: #*** recipe commences before first target.  Stop.)
   $(info filesp5\;s: #*** missing separator.  Stop.)
+  $(info but with hack $$(firstword =) and $$(firstword %))
   $(info $(wildcard filesp5*))
   $(info )
 endif
 
 #.POSIX:
-.SUFFIXES:
+.SUFFIXES:*** recipe commences before first target.  Stop.
+
 .PHONY: all show
 all: filemakesp1 filemakesp2 filemakesp3 filemakesp4 filemakesp5
 
@@ -141,6 +143,16 @@ filesp4\\\%sb.s:
 filesp4\\\\\%sbb.s:
 #filesp4\\\\%sbb.s:
 	touch '$@' # two backspaces + literal %
+
+# NOTE: No escape possible for ;
+# filesp6\;s: # *** missing separator.  Stop.
+
+# NOTE: No escape possible for =
+# filemakesp6: filesp6\=s # *** recipe commences before first target.  Stop.
+#	touch '$@'
+
+#filesp6\=s : # *** recipe commences before first target.  Stop.
+#	touch '$@'
 
 # some expansion hacks
 filemakesp5: filesp5$(firstword =)s filesp5$(firstword %)s\
