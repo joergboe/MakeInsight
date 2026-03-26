@@ -1,4 +1,7 @@
-# Usage: make -f non-ascii-vars.mk
+# Usage: make -f 51_non-ascii-vars.mk
+# Expected: shell error in line 59
+
+SHELL = /bin/bash
 
 define nl :=
 
@@ -38,7 +41,7 @@ $(info Liste: $(vl))
 $(info $(foreach var,$(vl),$(nl)$(var) = $($(var)) origin = $(origin $(var))))
 
 all:
-	$(MAKE) -f non-ascii-vars.mk
+	$(MAKE) -f 51_non-ascii-vars.mk
 else
 
 $(info *** Recursion - Check whether variables with special names are exported propperly ***)
@@ -50,5 +53,8 @@ all:
 	# (such as the info or eval or similar functions) then these side-effects will be seen every time
 	# a command is invoked. You can avoid this by ensuring that such variables have names which
 	# are not exportable by default. However, a better solution is to not use this “export by default”
-	# facility at all, and instead explicitly export the relevant variables by name. 
+	# facility at all, and instead explicitly export the relevant variables by name.
+	echo "$${vl}"
+	# "Can not use this special variable names in sh or bash"
+	echo "$${szß}"
 endif
