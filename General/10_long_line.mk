@@ -50,3 +50,10 @@ var9 := one$\
         word
 # NOTE: The condensed line one$ word undergoes expansion and the variable $( ) is empty.
 $(info var9 = '$(var9)')
+
+# A comment \
+is continued with bs/newline
+var10 = 10 # this comment is also continued \\\
+more here
+$(info var10='$(var10)')
+$(info END)
