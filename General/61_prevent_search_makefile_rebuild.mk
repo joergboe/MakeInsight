@@ -3,12 +3,15 @@
 # see: https://www.gnu.org/software/make/manual/html_node/Remaking-Makefiles.html
 
 # Usage:
-# make -f prevent_search_makefile_rebuild_1.mk -d
+# make -f 61_prevent_search_makefile_rebuild.mk -d
+
+# The default target must be the first.
+all:
 
 # This stops the try to re-make the Makefile
-# Makefile 'prevent_search_makefile_rebuild_1.mk' might loop; not remaking it.
-.PHONY: prevent_search_makefile_rebuild_1.mk
+# Makefile '61_prevent_search_makefile_rebuild.mk' might loop; not remaking it.
+.PHONY: 61_prevent_search_makefile_rebuild.mk
 
 # The default goal 'all'
 .PHONY: all
-all:
+all:;@echo 'Target all'
