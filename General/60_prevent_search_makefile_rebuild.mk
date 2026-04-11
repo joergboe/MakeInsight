@@ -10,6 +10,7 @@ all:
 
 # Write an explicit rule with the makefile as the target, and an empty recipe.
 60_prevent_search_makefile_rebuild.mk:;
+# NOTE: Do not use a rule with no receipt! A rule with no recipe will not end the implicit rule search.
 
 .PHONY: all
 all:;@echo 'Target all'
