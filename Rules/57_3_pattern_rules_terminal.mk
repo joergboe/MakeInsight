@@ -3,7 +3,10 @@
 # When a rule is terminal, it does not apply unless its prerequisites actually exist. Prerequisites that could be made
 # with other implicit rules are not good enough. In other words, no further chaining is allowed beyond a terminal rule.
 
-# See: https://www.gnu.org/software/make/manual/html_node/Match_002dAnything-Rules.html
+# A match-anything rule with a double colon is a terminal rule.
+# A match-anything rule with a single colon is a non-terminal rule.
+
+# See: https://www.gnu.org/software/make/manual/make.html#Match_002dAnything-Rules
 
 
 # If the pattern rule %.o : % conf ... is used, the target is successfully built.

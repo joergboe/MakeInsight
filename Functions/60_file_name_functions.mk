@@ -18,7 +18,10 @@ $(info -§1b- Empty list $$(dir $$(empty)) = '$(dir $(empty))')
 $(info -§1c- Dir up $$(dir ../src/src.cpp ./../src/src.cpp src/../src2/f1.cpp) =\
   '$(dir ../src/src.cpp ./../src/src.cpp src/../src2/f1.cpp)')
 
-$(info -§1d- Dots only $$(dir . ./ .. ../ ../.. ../../ ./src ../src) = '$(dir . ./ .. ../ ../.. ../../ ./src ../src)')
+$(info -§1d- Dot dir  $$(dir src/src.cpp ./src/src.cpp ././src/src.cpp) =\
+  '$(dir src/src.cpp ./src/src.cpp ././src/src.cpp)')
+
+$(info -§1e- Dots only $$(dir . ./ .. ../ ../.. ../../ ./src ../src) = '$(dir . ./ .. ../ ../.. ../../ ./src ../src)')
 $(info )
 
 $(info -§2- Notdir Function $$(notdir names…) - Extracts all but the directory-part of each file name in names.)

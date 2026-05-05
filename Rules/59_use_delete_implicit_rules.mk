@@ -6,6 +6,11 @@
 # The build in rule database can be disabled with command line option:
 # -r, --no-builtin-rules      Disable the built-in implicit rules.
 
+#If you have GNU Make 4.0 or higher, you can simply add:
+#    MAKEFLAGS += -r
+# to your makefile and it will remove all the built-in pattern rules.
+# see: https://lists.gnu.org/archive/html/help-make/2024-01/msg00004.html
+
 # You can cancel a built-in implicit rule by defining a pattern rule with the same target
 # and prerequisites, but no recipe.
 # See: https://www.gnu.org/software/make/manual/html_node/Canceling-Rules.html

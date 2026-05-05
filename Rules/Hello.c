@@ -1,8 +1,6 @@
 #include <stdio.h>
 
-#define ANSWER 1
-
 int main(int argc, char* argp[]) {
-	printf("Hello World!\nI=%d\n", ANSWER);
+	printf("Hello World!\nMakeInsight/Rules\n");
 	return 0;
 }

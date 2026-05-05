@@ -2,7 +2,7 @@
 
 # Usage: > make --file=33_empty_recipe_line.mk
 # Expected: The unknown_programm is attempted only once in line # $@...
-#           Empty line and lies with spaced only are skipped.
+#           Empty line and lines with spaces only are skipped.
 
 SHELL = /bin/bash
 $(info SHELL = '$(SHELL)')
