@@ -17,8 +17,8 @@
 # Cleanup: make -f 57_1_pattern_rules.mk clean
 
 # NOTE: The stem of the pattern must not be empty!
-# Usage:   make -f 57_1_pattern_rules.mk ZERO_STEM=1
-# Expect:  Fails to build target
+# Usage:   make -f 57_1_pattern_rules.mk ZERO_STEM=1 -r
+# Expect:  *** No rule to make target '.o', needed by 'target'.  Stop.
 # Cleanup: make -f 57_1_pattern_rules.mk ZERO_STEM=1 clean
 
 sources ::= f1.src f2.src

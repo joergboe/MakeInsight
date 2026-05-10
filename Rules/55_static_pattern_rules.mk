@@ -36,9 +36,9 @@
 # Cleanup: make -f 55_static_pattern_rules.mk clean
 
 # Try with parallel build
-# Usage:   make -f 55_static_pattern_rules.mk -j 4
-# runs step1: f1.src f2.src f3.src conf
-#      step2: f1.o f2.o f3.o
+# Usage:   make -f 55_static_pattern_rules.mk -j 8
+# runs step1: f1.src f2.src f3.src .src conf
+#      step2: f1.o f2.o f3.o .o
 #      step3: target
 
 sources = f1.src f2.src f3.src .src

@@ -1,5 +1,7 @@
 # Pattern Rules - Files are not in CURDIR
 
+# With a pattern $(builddir)/%.o or $(srcdir)/%.src the directory part of the target is not part of the stem.
+
 # Usage:   make -f 58_1_pattern_rules_dir.mk
 # Expected: directories src and build are created and target is built.
 # Cleanup: make -f 58_1_pattern_rules_dir.mk clean

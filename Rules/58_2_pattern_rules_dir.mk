@@ -1,6 +1,6 @@
 # Static Pattern Rules - Files are not in CURDIR
 
-# With a pattern %.o or %.src The directory part of the target is part of the stem.
+# With a pattern %.o or %.src the directory part of the target is part of the stem.
 
 # Usage:   make -f 58_2_pattern_rules_dir.mk
 # Expected: Directory build is created and target is built.
