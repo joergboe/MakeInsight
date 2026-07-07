@@ -19,19 +19,19 @@
 # No escape possible for ‘:’, ‘#’, ‘=’, or whitespace!
 # ERROR with colon
 #cxx\:aaa = 111
-# special-chars-vars.mk:2: *** missing separator.  Stop.
+# special-chars-vars.mk:21: *** missing separator.  Stop.
 
 # Error with #
 #cxx\#aaa = 444
-# special-chars-vars.mk:6: *** missing separator.  Stop.
+# special-chars-vars.mk:25: *** missing separator.  Stop.
 
 # Error with space
 #cxx\ aaa = 444
-# special-chars-vars.mk:10: *** missing separator.  Stop.
+# special-chars-vars.mk:29: *** missing separator.  Stop.
 
 # Error with tab
 #cxx\	aaa = 555
-# special-chars-vars.mk:14: *** missing separator.  Stop.
+# special-chars-vars.mk:33: *** missing separator.  Stop.
 
 # Define a multi-line variable with a single new-line.
 define nl :=

@@ -19,19 +19,25 @@ target_var := target.exe
 target: file1.oo file2.oo
 	@echo "*** Rule - $@ ***"
 	@echo "target_var = $(target_var)"
+	@echo "another_target_var = $(another_target_var)"
 	@echo
 
 %.oo: obj_var = objects
-%.oo: %.src header1 header2
+%.oo: %.src
 	@echo "*** Rule - $@ ***"
 	@echo "target_var = $(target_var)"
 	@echo "obj_var = $(obj_var)"
 	@echo "individually_var = $(individually_var)"
 	@echo
 
+sources := file1.src file2.src
+
+# We can not define variables in static pattern rule style. -> Syntax issue
+#$(sources): %.src: src_var = source #make: *** No rule to make target 'src_var', needed by 'file1.src'.  Stop.
 
 %.src: src_var = source
-%.src:
+
+$(sources): %.src:
 	@echo "*** Rule - $@ ***"
 	@echo "target_var = $(target_var)"
 	@echo "obj_var = $(obj_var)"
@@ -39,14 +45,10 @@ target: file1.oo file2.oo
 	@echo "individually_var = $(individually_var)"
 	@echo
 
-header1:
-	@echo "*** Rule - $@ ***"
-	@echo
+# One can define target and pattern variables for a target.
+file1.oo: individually_var := obj1.oo
+file2.oo: individually_var := obj2.oo
 
-header2:
-	@echo "*** Rule - $@ ***"
-	@echo
-
-# Can define target and pattern variables for a target.
-obj1.oo: individually_var := obj1.oo
-obj2.oo: individually_var := obj2.oo
+#NOTE: The ‘%’ can match any nonempty substring
+target:  another_target_var = The ‘%’ can match any nonempty substring
+%target: another_target_var = The ‘%’ can match an empty string - false!

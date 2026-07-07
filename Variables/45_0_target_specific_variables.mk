@@ -1,6 +1,6 @@
 # Target-specific Variable Values
 
-# usage: make -f 45_target_specific_variables.mk
+# usage: make -f 45_0_target_specific_variables.mk
 
 # See: https://www.gnu.org/software/make/manual/html_node/Target_002dspecific.html
 
@@ -22,7 +22,10 @@
 # then the first target to be built will cause that prerequisite to be built and the prerequisite will inherit the
 # target-specific value from the first target. It will ignore the target-specific values from any other targets.
 
-global_var = Global variables are visible from the point of definition
+# NOTE: target_var is not defined if obj is invoked directly.
+# usage: make -f 45_0_target_specific_variables.mk obj2
+
+global_var = Global variables are visible from the point of definition.
 
 private private_var = A global variable marked private will be visible in the global scope but will not be inherited by any\
  target, and hence will not be visible in any recipe.
@@ -54,16 +57,17 @@ obj1: obj_var = obj1.o
 obj1: src1 header1 header2
 	@echo "*** Rule - $@ ***"
 	@echo "target_var = $(target_var)"
+	@echo "private_target_var = $(private_target_var)"
 	@echo "obj_var = $(obj_var)"
 	@echo "src_var = $(src_var)"
 	@echo "header_var = $(header_var)"
-	@echo "private_target_var = $(private_target_var)"
 	@echo
 
 obj2: obj_var = obj2.o
 obj2: src2 header1 header2
 	@echo "*** Rule - $@ ***"
 	@echo "target_var = $(target_var)"
+	@echo "private_target_var = $(private_target_var)"
 	@echo "obj_var = $(obj_var)"
 	@echo "src_var = $(src_var)"
 	@echo "header_var = $(header_var)"
@@ -110,4 +114,4 @@ header2:
 # Multiple target values create a target-specific variable value for each member of the target list individually.
 header1 header2: common_header_var := Multiple target values create a target-specific variable value for each member of the target list individually.
 
-late_var = If a variable is not (yet) defined it expands to the empty string.
+late_var = Global variables defined defined after recipes are visible in all target contexts.
