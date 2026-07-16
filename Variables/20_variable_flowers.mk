@@ -17,31 +17,15 @@
 # these references are expanded whenever this variable is substituted (in the course of expanding some other string).
 # When this happens, it is called recursive expansion.
 
-$(info Recursively Expanded Variables)
-x = foo
-y = $(x) bar
-$(info expansion of x - $(x))
-$(info expansion of y - $(y))
+$(info Recursively Expanded Variables - assign with =)
+xr = bar
+yr = foo $(xr)
+$(info expansion of xr - $(xr))
+$(info expansion of yr - $(yr))
 
-x = later
-$(info expansion of x - $(x))
-$(info expansion of y - $(y))
-
-# Multiline variable definition (or define y =):
-
-x = foo
-define ym
-    $(x)
-    bar
-endef
-$(info expansion of x - $(x))
-$(info expansion of multiline ym)
-$(info $(ym))
-
-x = later
-$(info expansion of x - $(x))
-$(info expansion of multiline ym)
-$(info $(ym))
+xr = later
+$(info expansion of xr - $(xr))
+$(info expansion of yr - $(yr))
 $(info )
 
 # Simply Expanded Variable Assignment
@@ -53,30 +37,15 @@ $(info )
 # result of the expansion will contain their values as of the time this variable was defined.
 # See: https://www.gnu.org/software/make/manual/html_node/Simple-Assignment.html
 
-$(info Simply Expanded Variables)
-xs := foo
-ys := $(xs) bar
+$(info Simply Expanded Variables - assign with := or ::=)
+xs := bar
+ys := foo $(xs)
 $(info expansion of xs - $(xs))
 $(info expansion of ys - $(ys))
 
 xs ::= later
 $(info expansion of xs - $(xs))
 $(info expansion of ys - $(ys))
-
-# Multiline variable definition of a simply expanded variable:
-xs ::= foo
-define ysm ::=
-    $(xs)
-    bar
-endef
-$(info expansion of xs - $(xs))
-$(info expansion of multiline ysm)
-$(info $(ysm))
-$(info )
-xs ::= later
-$(info expansion of xs - $(xs))
-$(info expansion of multiline ysm)
-$(info $(ysm))
 $(info )
 
 # Immediately Expanded Variable Assignment
@@ -86,41 +55,21 @@ $(info )
 # converted into $$. This type of assignment uses the ‘:::=’ operator.
 # See: https://www.gnu.org/software/make/manual/html_node/Immediate-Assignment.html
 
-$(info Immediately Expanded Variables are immediately expanded)
-xi :::= first
-yi :::= $(xi)
+$(info Immediately Expanded Variables are immediately expanded - assign with :::=)
+xi :::= bar
+yi :::= foo $(xi)
 $(info expansion of xi - $(xi))
 $(info expansion of yi - $(yi))
-xi :::= second
+
+xi :::= later
 $(info expansion of xi - $(xi))
 $(info expansion of yi - $(yi))
 
 $(info Immediately Expanded Variables are automatically quoted)
-xi :::= one$$two
-yi :::= foo$$bar $(xi)
+xi :::= three$$four
+yi :::= one$$two $(xi)
 $(info expansion of xi - $(xi))
 $(info expansion of yi - $(yi))
-xi :::= three$$four
-$(info expansion of xi - $(xi))
-$(info expansion of yi - $(yi))
-$(info )
-
-# Multiline variable definition of a immediately expanded variable:
-xi :::= one$$two
-define yim :::=
-    $(xi)
-    foo$$bar
-endef
-$(info expansion of xi - $(xi))
-$(info expansion of multiline yim)
-$(info $(yim))
-
-xi :::= three$$four
-$(info expansion of xi - $(xi))
-$(info expansion of multiline yim)
-$(info $(yim))
-$(info )
-$(info The assignement operator :::= leads to a direct expansion of the right hand side and creates a recursive variable flower.)
 $(info )
 
 # With the operator :::= it is not possible to assign a variable reference or a function reference to the immediately
@@ -131,16 +80,16 @@ b = $(a)
 c :::= foo $(b)
 $(info expansion of a = $(a))
 $(info expansion of c = $(c))
-$(info )
 a = new bar
 $(info expansion of a = $(a))
 $(info expansion of c = $(c))
 $(info )
 
+$(info Functions 'flavor' and 'value')
 # The function flavor it tells you the flavor of a variable.
 # See: https://www.gnu.org/software/make/manual/html_node/Flavor-Function.html
 
-$(info flavors - y=$(flavor y) ys=$(flavor ys) yi=$(flavor yi) z=$(flavor z))
+$(info flavors - yr=$(flavor yr) ys=$(flavor ys) yi=$(flavor yi) z=$(flavor z))
 
 # The value function provides a way for you to use the value of a variable without having it expanded.
 # Please note that this does not undo expansions which have already occurred; Note that variable is the name of a
@@ -148,35 +97,45 @@ $(info flavors - y=$(flavor y) ys=$(flavor ys) yi=$(flavor yi) z=$(flavor z))
 # (You can, however, use a variable reference in the name if you want the name not to be a constant.)
 # See: https://www.gnu.org/software/make/manual/html_node/Value-Function.html
 
-$(info values - y=$(value y) ys=$(value ys) yi=$(value yi))
+$(info values - yr=$(value yr) ys=$(value ys) yi=$(value yi))
 $(info )
 
 # Recursively Expanded Variables and Immediately Expanded Variables are automatically quoted during assignment
 # Simply Expanded Variable are not.
-# Recursively Expanded Variables and Immediately Expanded Variables are expanded if used Simply Expanded Variable are
-# used verbatim.
+# Recursively Expanded Variables and Immediately Expanded Variables are expanded if used
+# Simply Expanded Variable are used verbatim.
 
-v = one$$two
-vs ::= three$$four
-vi :::= five$$six
-$(info expansion v=$(v) value v=$(value v))
+vr = one$$two
+vs ::= one$$two
+vi :::= one$$two
+$(info expansion vr=$(vr) value vr=$(value vr))
 $(info expansion vs=$(vs) value vs=$(value vs))
 $(info expansion vi=$(vi) value vi=$(value vi))
 $(info )
 
+# Quoting means dollar symbol is escaped.
+vr = one$$two\# no komment
+vs ::= one$$two\# no komment
+vi :::= one$$two\# no komment
+$(info expansion vr=$(vr) value vr=$(value vr))
+$(info expansion vs=$(vs) value vs=$(value vs))
+$(info expansion vi=$(vi) value vi=$(value vi))
+$(info )
+
+$(info Conditional assignement - operator ?=)
 # The operators '?=' and '+=' preserve the flavor of the variable, if it exists, and creates a recursively expanded
 # variable if the variable not exists.
 
-x ?= new
+xr ?= new
 xs ?= new
 xi ?= new
 z ?= new
 
-$(info Conditional assignement 'new')
-$(info expansions - x=$(x) xs=$(xs) xi=$(xi) z=$(z))
-$(info flavors - x=$(flavor x) xs=$(flavor xs) xi=$(flavor xi) z=$(flavor z))
+$(info expansions - xr=$(xr) xs=$(xs) xi=$(xi) z=$(z))
+$(info flavors - xr=$(flavor xr) xs=$(flavor xs) xi=$(flavor xi) z=$(flavor z))
 $(info )
 
+$(info Conditional assignement to an empty var)
 # The operator '?=' is a shorthand for:
 # ifeq ($(origin FOO), undefined)
 # FOO = bar
@@ -186,18 +145,18 @@ FOO ?= new
 $(info If FOO was empty but defined after assignment FOO ?= bar is '$(FOO)')
 $(info )
 
-$(info Append '$$(z)')
-y += $(z)
+$(info Append - operator +=)
+yr += $(z)
 ys += $(z)
 yi += $(z)
-$(info expansions - y=$(y) ys=$(ys) yi=$(yi) z=$(z))
-$(info flavors - y=$(flavor y) ys=$(flavor ys) yi=$(flavor yi))
-$(info )
-$(info The flavor of the variables is maintained!)
+zz += $(z)
+$(info flavors - yr=$(flavor yr) ys=$(flavor ys) yi=$(flavor yi) zz=$(flavor zz))
+$(info expansions - yr='$(yr)' ys='$(ys)' yi='$(yi)' zz='$(zz)')
 z = newest
-$(info expansion of z = $(z))
-$(info expansions - y=$(y) ys=$(ys) yi=$(yi) z=$(z))
-$(info Note: Variable yi is considered a recursive variable; when you append to it with ‘+=’ the value on the)
+$(info z = $(z))
+$(info expansions - yr='$(yr)' ys='$(ys)' yi='$(yi)' zz='$(zz)')
+$(info values     - yr='$(value yr)' ys='$(value ys)' yi='$(value yi)' zz='$(value zz)')
+$(info NOTE: Variable yi is considered a recursive variable; when you append to it with ‘+=’ the value on the)
 $(info right-hand side is not expanded immediately!)
 $(info )
 
@@ -209,30 +168,7 @@ empty ::=
 space ::= $(empty) $(empty)
 FOO = $(space)
 FOO += bar
-$(info If FOO was a single space assignment FOO ?= bar is '$(FOO)')
+$(info If FOO was a single space after assignment FOO ?= bar is '$(FOO)')
 $(info )
 
-# A disadvantage of recursively expanded variables is that any functions referenced in the definition will be
-# executed every time the variable is expanded. This makes make run slower; worse, it causes the wildcard and shell
-# functions to give unpredictable results because you cannot easily control when they are called, or even how many times.
-
-$(info For a recursively expanded variable the shell runs every time the variable is expanded!)
-recursive_var = $(shell echo Run the shell >&2; date; sleep 2)
-$(info recursive_var = $(recursive_var))
-$(info recursive_var = $(recursive_var))
-$(info )
-$(info For a simply expanded variable the shell runs once when the variable is assigned to.)
-simple_var := $(shell echo Run the shell >&2; date; sleep 2)
-$(info simple_var = $(simple_var))
-$(info simple_var = $(simple_var))
-
-# Care must be taken if content is added to a variable
-# This works fine for a simple variable.
-vars := foo
-vars := $(var) bar
-$(info vars = $(vars))
-
-# But produces a infinite loop for recursively expanded variables.
-var = foo
-var = $(var) bar
-$(info var = $(var))
+all:

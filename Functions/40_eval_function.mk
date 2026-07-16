@@ -16,101 +16,51 @@
 # when they are parsed as makefile syntax. This means you may need to provide extra levels of escaping for “$”
 # characters when using eval.
 
-PROGRAMS    = pr1 pr2
+# In function context special characters ;|:#\ and sometimes , go unmolested through.
+text = 4 symbols $$$$$$$$ - 2 symbols $$$$ - 1 symbol $$ ;,|: \\\\\# 2 bs+hm \\\# 1 bs+hm \# hm # teststring
+$(info $(value text))
 
-PHONY: all
-all: $(PROGRAMS)
+$(eval $(info $(text))) # nothing to eval - info function expands to nothing - text is expanded once
 
-# Use eval to generate rules and assignments
-define PROGRAM_template =
- $(info generate rule for $1)
- $1: $1.o
-	@echo Rule $$@
- ALL_OBJS   += $1.o
-endef
+$(eval $$(info $$(text))) # eval $(info $(text)) - text is expanded once
 
-$(foreach var,$(PROGRAMS),$(eval $(call PROGRAM_template,$(var))))
+$(eval $$(info $(text))) # eval $(info 4 symbols ...) - text is expanded twice
 
-$(ALL_OBJS):
-
-$(info ALL_OBJS = $(ALL_OBJS))
-
-$(info )
-text ::= Dollar $$$$ must be escaped twice; \# hashmark once; \\\# backslash hashmark must follow quoting rule;\
-paranteses must match (x); and braches may not match{; comma, is possible
-$(eval $$(info $(text)))
-
-$(info )
-# A list with 4 columns separated by ;
-# headline:  source-file;module;cmi-file;is-interface
-SRC_MOD_CMI_IS-IF_LIST = module$$1.cpp;module$$1;gcm.cache/module$$1.gcm;1
-SRC_MOD_CMI_IS-IF_LIST += m_greetings-impl.cpp;greetings-impl;gcm.cache/greetings-impl.gcm;0
-SRC_MOD_CMI_IS-IF_LIST += m_greetings_if.cpp;greetings_if;gcm.cache/greetings_if.gcm;1
-SRC_MOD_CMI_IS-IF_LIST += weired\#name][?*!§%\\\src,(1){äæ.cpp;weiredname][?*!§%\\\src,(1){äæ-module;gcm.cache/weired\#name][?*!§%\\\src,(1){äæ.gcm;1
-
-# The function to define variables invoked by 'call'
-define split =
-$(info $0 : $$1=$1 $$2=$2 $$3=$3 $$4=$4)
-module2cmi_$2 ::= $3
-modules += $2
-modsources += $1
-endef
-
-split_four_column_list = $(foreach line,$1,\
-  $(let src mod cmi is-if,$(subst ;, ,$(line)),\
-    $(eval $(call split,$(src),$(mod),$(cmi),$(is-if)))\
-  )\
-)
-
-# Escape $ and # with subst
-$(call split_four_column_list,$(subst $$,$$$$,$(subst #,\#,$(SRC_MOD_CMI_IS-IF_LIST))))
-
-$(info modules = $(modules))
-$(info modsources = $(modsources))
-$(info Database)
-$(foreach mod,$(modules),$(info module2cmi_$(mod) = $(module2cmi_$(mod))))
+# The value function prevents one level of expansion if text is a Recursively Expanded Variable.
+$(eval $$(info $(value text))) # eval $(info 4 symbols ...) - text is expanded once
 $(info )
 
-# The function to define variables using named variables
-define split2 =
-$(info $0 : $$(src)=$(src) $$(mod)=$(mod) $$(cmi)=$(cmi) $$(is-if)=$(is-if))
-module2cmi2_$(mod) ::= $(cmi)
-modules2 += $(mod)
-modsources2 += $(src)
-endef
-# NOTE: The split macro must use $(src) but not $$(src) - The (local) variables src,mod.. are valid only when the eval
-# arguments are expanded. These local variables are undefined in the second step when the eval result is parsed!
+text = Dollar $$ must be escaped twice; paranteses must match (in this example); and braches may not match{; \
+comma, is possible; \# precede hashmark with bs; \\\# backslash hashmark must follow quoting rule; \
+the literal function name $$(hsm);
 
-split_four_column_list = $(foreach line,$1,\
-  $(let src mod cmi is-if,$(subst ;, ,$(line)),\
-    $(eval $(split2))\
-  )\
-)
-
-$(call split_four_column_list,$(subst $$,$$$$,$(subst #,\#,$(SRC_MOD_CMI_IS-IF_LIST))))
-
-$(info modules2 = $(modules2))
-$(info modsources2 = $(modsources2))
-$(info Database2)
-$(foreach mod,$(modules2),$(info module2cmi2_$(mod) = $(module2cmi2_$(mod))))
+$(info Escape $$ with another $$:)
+$(eval $$(info $(subst $$,$$$$,$(text))))
 $(info )
 
-# Variable definition direct in eval function
-split_four_column_list = $(foreach line,$1,\
-  $(let src mod cmi is-if,$(subst ;, ,$(line)),\
-    $(info $0 : $$(src)=$(src) $$(mod)=$(mod) $$(cmi)=$(cmi) $$(is-if)=$(is-if))\
-    $(eval module2cmi3_$(mod) ::= $(cmi))\
-    $(eval modules3 += $(mod))\
-    $(eval modsources3 += $(src))\
-  )\
-)
-# NOTE: We must use $(src) but not $$(src) - The (local) variables src,mod.. are valid only when the eval
-# arguments are expanded. These local variables are undefined in the second step when the eval result is parsed!
-
-$(call split_four_column_list,$(subst $$,$$$$,$(subst #,\#,$(SRC_MOD_CMI_IS-IF_LIST))))
-
-$(info modules3 = $(modules3))
-$(info modsources3 = $(modsources3))
-$(info Database3)
-$(foreach mod,$(modules3),$(info module2cmi3_$(mod) = $(module2cmi3_$(mod))))
+$(info If eval uses assignment, the hashmark introduces a comment!)
+$(info NOTE: Simple hashmark substitution fails in case of backslash hashmark sequence.)
+$(eval var = $(subst #,\#,$(subst $$,$$$$,$(text))))
+$(info $(var))
 $(info )
+
+$(info Hide hashmark in a variable if eval uses assignment:)
+hsm ::= \#
+$(eval var = $(subst #,$$(hsm),$(subst $$,$$$$,$(text))))
+$(info $(var))
+$(info )
+
+$(info Check the same substitution with eval and function context:)
+$(eval $$(info $(subst #,$$(hsm),$(subst $$,$$$$,$(text)))))
+$(info )
+
+$(info Hide hashmark in a variable and use value function:)
+hsm ::= \#
+$(eval var = $(subst #,$$(hsm),$(value text)))
+$(info $(var))
+$(info )
+
+$(info Check the same substitution with eval and function context:)
+$(eval $$(info $(subst #,$$(hsm),$(value text))))
+$(info )
+all:

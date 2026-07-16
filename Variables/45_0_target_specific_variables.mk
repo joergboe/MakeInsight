@@ -114,4 +114,4 @@ header2:
 # Multiple target values create a target-specific variable value for each member of the target list individually.
 header1 header2: common_header_var := Multiple target values create a target-specific variable value for each member of the target list individually.
 
-late_var = Global variables defined defined after recipes are visible in all target contexts.
+late_var = Global variables are always visible during recipe execution, regardless of where they are defined.

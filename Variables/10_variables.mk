@@ -62,15 +62,15 @@ define two-lines
     Line two
 endef
 $(info Multi line variables)
-$(info $(two-lines))
-# Note: the last newline of the define is not part of the variable.
+$(info $(two-lines) END)
+# NOTE: the last newline of the define is not part of the variable.
 
-# Note: a single newline variable requires 2 empty lines!
+# NOTE: a single newline variable requires 2 empty lines!
 define nl
 
 
 endef
-$(info Use variable nl$(nl)line$(nl)line)
+$(info Use variable nl:$(nl)line1$(nl)line2)
 
 # A substitution reference substitutes the value of a variable with alterations that you specify.
 # It has the form ‘$(var:a=b)’ (or ‘${var:a=b}’) and its meaning is to take the value of the variable var,
@@ -79,7 +79,7 @@ $(info Use variable nl$(nl)line$(nl)line)
 # value in order to be replaced; other occurrences of a in the value are unaltered.
 # See: https://www.gnu.org/software/make/manual/html_node/Substitution-Refs.html
 
-$(info Substitution reference)
+$(info Substitution reference:)
 $(info Objects from sources are $(sources:.c=.o))
 
 # A substitution reference is shorthand for the patsubst expansion function
@@ -87,4 +87,6 @@ $(info Objects from sources are $(sources:.c=.o))
 # Another type of substitution reference lets you use the full power of the patsubst function. It has the same form
 # ‘$(var:a=b)’ described above, except that now a must contain a single ‘%’ character.
 
-$(info Objects from sources are $(sources:%=%.o))
+$(info Objects from sources are $(sources:%.c=%.o))
+
+all:
