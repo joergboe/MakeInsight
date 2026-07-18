@@ -28,7 +28,7 @@ endef
 
 # The info function does nothing more than print its (expanded) argument(s) to standard output.
 # The result of the expansion of this function is the empty string. Thus this function can be used everywhere in a makefile
-$(info $(text)|)
+$(info $(text))
 
 # Define variables to hide special characters in function calls
 comma := ,
@@ -69,67 +69,73 @@ $(info -§3- Function parameters)
 # Print 3 input parameters
 print_param = '$(1)' '$(2)' '$(3)'
 
-$(info -§3a- Spaces in subsequent arguments are kept$(nl)\
-$$(call print_param , a , b    , c  ) = $(call print_param , a , b    , c  ))
+$(info -§3a- Spaces in subsequent arguments are kept)
+$(info $$(call print_param , a , b    , c  ) = $(call print_param , a , b    , c  )$(nl))
 # Continuation line (no POSIXS mode) yields one space, preceding and trailing spaces are condensed to one space.
-$(info -§3b- Continuation line (no POSIXS mode) yields one space$(nl)\
-$$(call print_param,\na,\n    b,   \nc) = $(call print_param,\
+
+$(info -§3b- Continuation line (no POSIXS mode) yields one space)
+$(info $$(call print_param,\na,\n    b,   \nc) = $(call print_param,\
 a,\
     b,   \
-c))
+c)$(nl))
+
 pb = b
 pc = c
-# Spaces in second and subsequent arguments are kept.
-$(info -§3a- $$(call print_param, , $$(pb) , $$(pc) ) = $(call print_param, , $(pb) , $(pc) ))
-$(info -§3b- $$(call print_param,\n,$$(pb),\n$$(pc)\n) = $(call print_param,\
+$(info -§3c- Spaces in second and subsequent arguments are kept.)
+$(info $$(call print_param, , $$(pb) , $$(pc) ) = $(call print_param, , $(pb) , $(pc) ))
+$(info $$(call print_param,\n,$$(pb),\n$$(pc)\n) = $(call print_param,\
 ,$(pb),\
 $(pc)\
-))
-# Hide a comma in a variable
-$(info -§3c- Hide a comma in a variable$(nl)\
-$$(call print_param,$$(comma),b) = $(call print_param,$(comma),b))
-# Can use multiline variables - The newline is hidden
+)$(nl))
+
+$(info -§3d- Hide a comma in a variable)
+$(info $$(call print_param,$$(comma),b) = $(call print_param,$(comma),b)$(nl))
+
 define multiline
 line 1
 line 2
 endef
-$(info -§3d- multiline$(nl)$$(call print_param,a,b$$(multiline)b,   c) = $(call print_param,a,b$(multiline)b,   c))
+$(info -§3e- multiline variables are preserved)
+$(info $$(call print_param,a,$$(multiline),   c) = $(call print_param,a,$(multiline),   c)$(nl))
 
-# paranteses must be a matched pair
-$(info -§3e- $$(call print_param,x(x)x,y(y)y, ) = $(call print_param,x(x)x,y(y)y, ))
-# braces may be unmatched
-$(info -§3f- $$(call print_param,x{xx,yy}y, ) = $(call print_param,x{xx,yy}y, ))
-# or use braces - paranteses may be unmatches
-${info -§3g- $${call print_param,x(xx,yyy, } = ${call print_param,x(xx,yyy, }}
+$(info -§3f- paranteses must be a matched pair)
+$(info $$(call print_param,x(x)x,y(y)y, ) = $(call print_param,x(x)x,y(y)y, )$(nl))
 
-# NOTE: If a function expands to the empty string, one can use a function in makefile
+$(info -§3g- braces may be unmatched)
+$(info $$(call print_param,x{xx,yy}y, ) = $(call print_param,x{xx,yy}y, )$(nl))
+
+${info -§3h- or use braces - paranteses may be unmatches}
+${info $${call print_param,x(xx,yyy, } = ${call print_param,x(xx,yyy, }${nl}}
+
+$(info -§3i- ;:|=# are not special in function context)
+$(info $$(call print_param,;:,|=,#) = $(call print_param,;:,|=,#)$(nl))
+
 print = $(info '$1') $(info '$2')
-$(info -§4--)
+$(info -§4- If a function expands to the empty string (or space), one can use a function in makefile)
 $(call print,aa,bb)
+$(info )
 
-# NOTE: Paramaeter 0 is the Function/Macro/Variable name
-$(info -§5--)
+$(info -§5- Paramaeter 0 is the Function/Macro/Variable name)
 print = $(info '$0' '$1' '$2')
 $(call print,aa,bb)
+$(info )
 
-# Type of parameter variable is simlple expanded variable
-# A parameter variable may be undefined
-$(info -§6--)
+$(info -§6- Type of parameter variable is simlple expanded variable)
+$(info A parameter variable may be undefined if not provided)
 type_info = $(info type $$1 = $(flavor 1) type $$2 = $(flavor 2) type $$3 = $(flavor 3)\
-$(info value $$1 = '$(value 1)' value $$2 = '$(value 2)' value $$3 = '$(value 3)'))
+value $$1 = '$(value 1)' value $$2 = '$(value 2)' value $$3 = '$(value 3)')
 $(call type_info,a,$(comma))
+$(info )
 
-# NOTE: Assignements are not possible in functions.
 define assignement
 $(info $0)
 VAR = $1
 $(info end)
 endef
-$(info -§7-)
+$(info -§7- Assignements are not possible in functions.)
 #$(call assignement,1234)  # *** missing separator.  Stop.
 
-# Must use eval in such cases
 $(eval $(call assignement,1234))
-$(info -§8- VAR=$(VAR))
+$(info -§8- Must use eval in such cases VAR=$(VAR))
 
 target:
