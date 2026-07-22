@@ -63,4 +63,14 @@ $(info )
 $(info Check the same substitution with eval and function context:)
 $(eval $$(info $(subst #,$$(hsm),$(value text))))
 $(info )
+
+$(info Avoid unnecessary expansions in functions context:)
+$(eval $$(info $$(text)))
+$(info )
+
+$(info Avoid unnecessary expansions assignement:)
+$(eval var = $$(text))
+$(info $(var))
+$(info )
+
 all:

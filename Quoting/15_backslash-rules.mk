@@ -55,7 +55,8 @@ endif
 
 .SUFFIXES:
 .PHONY: all show clean
-all: target-bs-embedded target-bs-begin target-bs-end target-bs-nl-even target-bs-nl-odd target-bs-nl-odd2 target-bs-sp
+all: target-bs-embedded target-bs-begin target-bs-end target-bs-nl-even target-bs-nl-odd target-bs-rules\
+    target-bs-nl-odd2 target-bs-sp
 
 show:
 
@@ -65,7 +66,7 @@ target-bs-embedded: filebm\1b filebm\\2b filebm\\\3b filebm\\\\4b
 	@echo '$$^ = $^'
 	@echo -e '*** END: embedded backslashes ***\n'
 filebm\1b:
-	# Starting or embedded backslashes preceding non special character go unmolested by make.
+	# -§1- Embedded backslashes preceding non special character go unmolested by make.
 	touch '$@' # shell quoting is required
 filebm\\2b:
 	touch '$@'
@@ -79,6 +80,7 @@ target-bs-begin:  \fileba1b \\fileba2b \\\fileba3b \\\\fileba4b
 	@echo '$$^ = $^'
 	@echo -e '*** END: backslashes at start ***\n'
 \fileba1b:
+	# -§2- Starting backslashes preceding non special character go unmolested by make.
 	touch '$@' # shell quoting is required
 \\fileba2b:
 	touch '$@'
@@ -92,7 +94,7 @@ target-bs-end: filebe2b\\ filebe4b\\\\	filebe6b\\\\\\# comment
 	@echo '$$^ = $^'
 	@echo -e '*** END: backslashes at end before <space>, <tab>, : or # ***\n'
 filebe2b\\ :
-	# NOTE: 2N backslashes required before special char (<space>, <tab>, : and #)
+	# -§3- 2N backslashes required at end before special char (<space>, <tab>, : and #)
 	touch '$@'
 filebe4b\\\\	:
 	touch '$@' # before <tab>
@@ -100,32 +102,58 @@ filebe6b\\\\\\:
 	touch '$@'
 
 target-bs-nl-even: filebne2b\\
-	# NOTE: 2N backslashes before newline represent 2N backslashes.
-	# NOTE: a space/tab or space(s) + comment may follow after last prerequisite and newline
 	touch $@
 	@echo '$$^ = $^'
 	@echo -e '*** END: even number of backslashes at end before <nl> ***\n'
 target-bs-nl-even: filebne4b\\\\ 
-target-bs-nl-even: filebne6b\\\\\\  	# comment
+target-bs-nl-even: filebne6b\\\\\\	
 filebne2b\\\\ :
-	touch '$@'
+	# -§4- ! Even number before newline represent N backslashes !
+	# NOTE: a space/tab or space(s) + comment may follow after last prerequisite and newline
+	touch '$@' # target requires 2N backslashes
 filebne4b\\\\\\\\:
-	touch '$@'
+	touch '$@' # target requires 2N backslashes
 filebne6b\\\\\\\\\\\\:
-	touch '$@'
+	touch '$@' # target requires 2N backslashes
 
 target-bs-nl-odd: filebno1b\	# There must be a space or tab before nl
 	touch '$@'
 	@echo '$$^ = $^'
 	@echo -e '*** END: odd number of backslashes at end before <nl> ***\n'
 target-bs-nl-odd: filebno3b\\\ 
+target-bs-nl-odd: filebno5b\\\\\	
+
 filebno1b\\:
-	# NOTE: An odd number of backslashes at the end of the last prerequisite require a space/tab before nl
+	# -§5- An odd number of backslashes at the end of the last prerequisite require a space or tab before nl
 	#       Otherwise a continuation line is introduced.
-	# NOTE: a space(s) + comment may also follow after last prerequisite
-	touch '$@'
+	# ! Here the odd number represent N backslashes !
+	# NOTE: More spaces and a comment may also follow after last prerequisite.
+	touch '$@' # target requires 2N backslashes
 filebno3b\\\\\\:
-	touch '$@'
+	touch '$@' # target requires 2N backslashes
+filebno5b\\\\\\\\\\:
+	touch '$@' # target requires 2N backslashes
+empty =
+
+target-bs-rules: filebr1\\ filebr2\\\\	filebre3\\\ 
+	touch $@
+	@echo '$$^ = $^'
+	@echo -e '*** END: backslashes at end and before <nl> escape rules***\n'
+target-bs-rules: filebre4\\\\	  # comment may follow space characters
+target-bs-rules: filebre6\\\\\\ $(empty) # Appending an empty variable does not help!
+filebr1\\:
+	# -§6- Backslashes at the end must be escaped differently in prerequisites:
+	# * a word in the middle requires 2N
+	# * the last word requires N backslashes and a space if N is odd
+	touch '$@' # target requires 2N backslashes
+filebr2\\\\:
+	touch '$@' # target requires 2N backslashes
+filebre3\\\\\\:
+	touch '$@' # target requires 2N backslashes
+filebre4\\\\\\\\:
+	touch '$@' # target requires 2N backslashes
+filebre6\\\\\\\\\\\\:
+	touch '$@' # target requires 2N backslashes
 
 target-bs-nl-odd2: filebx1b\
 filebx3b\\\
@@ -180,4 +208,5 @@ filess7b\\\\\\\::
 clean:
 	rm -fv filebm* filebe* filebn* filebx* filess*
 	rm -fv \\fileba* \\\\fileba* \\\\\\fileba* \\\\\\\\fileba*
+	rm -fv filebr*
 	rm -fv target-bs*

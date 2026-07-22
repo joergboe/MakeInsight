@@ -2,7 +2,9 @@
 
 # Usage: make -f 42_eval_function_list_processing.mk
 
-# use of eval function to process a list.
+# Use eval function to process a list.
+# Avoid unnecessary expansions, use variables instead.
+# see: 43_eval_function_in_functions.mk
 
 # a list with 2 columns separated by ;
 # lines are separated by a space
@@ -57,8 +59,6 @@ module2cmi2_$(mod) ::= $(cmi)
 modules2 += $(mod)
 cmifiles2 += $(cmi)
 endef
-# NOTE: The split macro must use $(src) but not $$(src) - The (local) variables src,mod.. are valid only when the eval
-# arguments are expanded. These local variables are undefined in the second step when the eval result is parsed!
 
 # function to process the list and define the variables macro assign2
 split2 = $(foreach line,$1,\
