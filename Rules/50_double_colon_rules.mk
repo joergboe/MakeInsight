@@ -14,6 +14,8 @@
 # Each double-colon rule is processed individually, just as rules with different targets are processed.
 #
 # The double-colon rules for a target are executed in the order they appear in the makefile.
+#
+# Each double-colon rule should specify a recipe; if it does not, an implicit rule will be used if one applies.
 
 # Usage  : make -f 50_double_colon_rules.mk # target triggered by f1 and target triggered by f2
 #          touch f1

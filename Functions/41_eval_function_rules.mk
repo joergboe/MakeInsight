@@ -27,7 +27,6 @@ $(var) : $(var:.exe=.o)
 	@echo 'Rule $$@ runs due to $$?'
 	@echo 'target: $(var) - pre: $(var:.exe=.o)'
 	@echo
-objects   += $(var:.exe=.o)
 endef
 
 # The foreach loop provides the variable var
@@ -35,6 +34,7 @@ endef
 # Escape the hashmark with bs. This is required in targets, prerequisites and assignments.
 $(foreach var,$(subst #,\#,$(value targets)),\
     $(eval $(rule_template))\
+    $(eval objects += $(var:.exe=.o))\
     $(info )\
 )
 
@@ -45,4 +45,5 @@ $(info flavor objects = $(flavor objects))
 $(info )
 
 #NOTE: The display 'generate rule..' is broken! - Info function expands the escaped string.
+#NOTE: The recipe is broken \# vs #
 #NOTE: The simple substitution for the hash mark fails if the hash mark is preceded by a backspace.

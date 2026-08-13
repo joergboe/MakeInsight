@@ -1,32 +1,30 @@
 # Dependencies and file pathes
 
 # Usage: > make -f 41_1_dependency_tree_and_pathes.mk
-# Expect: Run rules f1 src/../f1 src/f2 src/./f2 src//f2 src/f3 $(prereq3) /$(prereq3) and target and src
+# Expect: Run rules foo src/../foo src/bar src/./bar src//bar src/baz $(prereq3) /$(prereq3) and target and src
 # Cleanup: > make -f 41_1_dependency_tree_and_pathes.mk clean
 
 # Usage: > make -f 41_1_dependency_tree_and_pathes.mk TOUCH=1
-# Expect: Run rules f1 src/f2 src/f3 and target and src. Duplicate file objects are skipped.
+# Expect: Run rules foo src/bar src/baz and target and src. Duplicate file objects are skipped. These files are current
+#         after the first touch of the common file object.
 # Cleanup: > make -f 41_1_dependency_tree_and_pathes.mk clean
 
-# Usage: > make -f 41_1_dependency_tree_and_pathes.mk TOUCH=1 -j
-# Expect: Run rules f1 src/../f1 src/f2 src/./f2 src//f2 src/f3 $(prereq3) /$(prereq3) and target and src
+# Usage: > make -f 41_1_dependency_tree_and_pathes.mk TOUCH=1 -j --output-sync
+# Expect: Run rules foo src/../foo src/bar src/./bar src//bar src/baz $(prereq3) /$(prereq3) and target and src
 # Cleanup: > make -f 41_1_dependency_tree_and_pathes.mk clean
 
-# Usage: > make -f 41_1_dependency_tree_and_pathes.mk target_ln
-# Expect: File operations are with link targets
-# Cleanup: > make -f 41_1_dependency_tree_and_pathes.mk clean
+# Usage: > make -f 41_1_dependency_tree_and_pathes.mk target2
+# Expected: Inconsistent usage results in failures.
 
 # For the creation of the dependency tree make uses the targets and prerequisites almost literally.
 # Specifically, it does not canonize the path.
 # Exception: Only leading ./ Dot components are removed.
 
-$(shell ln -s target2 target_ln; ln -s src/file1 link1; ln -s src/file2 link2;)
-
-prereq3 = $(abspath src/f3)
+prereq3 = $(abspath src/baz)
 $(info prereq3 = $(prereq3))
 $(info )
 
-./target: f1 ./f1 src/../f1 src/f2 src/./f2 ./src//f2 src/f3 $(prereq3) /$(prereq3)
+./target: foo ./foo src/../foo src/bar src/./bar ./src//bar src/baz $(prereq3) /$(prereq3)
 	@echo "rule $@"
 	@echo '$$@ = $@'
 	@echo '$$+ = $+'
@@ -34,39 +32,31 @@ $(info )
 	@echo '$$? = $?'
 	@echo '$$< = $<'
 	touch $@
-# NOTE: ./f1 and f1 are considered the same object
-# NOTE: ./f1 yields f1
-# NOTE: f1 ./src/../f1 are considered different objects
-# NOTE: src/f2, src/./f2 and src//f2 are considered different objects
-# NOTE: src/f3, $(abspath src/f3) and /$(abspath src/f3) are considered different objects
+# NOTE: ./foo and foo are considered the same object
+# NOTE: ./foo yields foo
+# NOTE: foo ./src/../foo are considered different objects and separate rules are created.
+# NOTE: src/bar, src/./bar and src//bar are considered different objects
+# NOTE: src/baz, $(abspath src/baz) and /$(abspath src/baz) are considered different objects
 
-f1 ./src/../f1 src/f2 src/./f2 src//f2 ./src/f3 $(prereq3) /$(prereq3) : src
+foo ./foo ./src/../foo src/bar src/./bar src//bar ./src/baz $(prereq3) /$(prereq3) : | src
 	@echo "rule $@"
 ifdef TOUCH
 	touch $@
 endif
-# NOTE: finally the same file object are touched f1, src/f2 and src/f3
+	@echo
+# NOTE: finally the same file object are touched foo, src/bar and src/baz
 
 src:
 	mkdir src
+	@echo
 
-./target_ln: link1 link2
-	@echo "rule ./target_ln"
-	@echo '$$@ = $@'
-	@echo '$$^ = $^'
-	@echo '$$+ = $+'
-	@echo '$$? = $?'
-	@echo '$$< = $<'
-	touch $@
-
-link1 link2: | src
+target2 : src/./foobar
 	@echo "rule $@"
-	touch $@
-	@ls -l $@
+
+src/foobar:
+	@echo "rule $@"
 
 .PHONY: clean
 clean:
 	rm -rf src
-	rm -f target target2
-	rm -f target_ln
-	rm -f link1 link2
+	rm -f target target2 foo

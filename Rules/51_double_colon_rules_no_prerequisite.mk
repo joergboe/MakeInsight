@@ -1,4 +1,4 @@
-# Double-Colon Rules without Recipes or Prerequisites
+# Double-Colon Rules without Prerequisites
 
 # see: https://www.gnu.org/software/make/manual/make.html#Double_002dColon
 # Each double-colon rule’s recipe is executed if the target is older than any prerequisites of that rule.

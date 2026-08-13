@@ -31,12 +31,12 @@ $$(var) : $$(var:.exe=.o) # expansion here
 	@echo 'Rule $$@ runs due to $$?'
 	@echo 'target: $$(my_target) - pre: $$(my_target:.exe=.o)' # target variable
 	@echo
-objects += $$(var:.exe=.o) # expansion here
 endef
 
 # The foreach loop provides the variable var
 $(foreach var,$(targets),\
     $(eval $(rule_template))\
+    $(eval objects += $$(var:.exe=.o) # expansion here)\
     $(info )\
 )
 

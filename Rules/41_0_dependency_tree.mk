@@ -5,11 +5,11 @@
 # The file target 'result' depends on 'f1', 'f2' and 'f3'.
 # The files 'f1', 'f2' and 'f3' are created if necessary.
 
-# Cleanup: make -f 41_dependency_tree.mk clean
-# Usage: make -f 41_dependency_tree.mk # rules 'all', 'result', 'f1, 'f2' and 'f3' run.
-#        make -f 41_dependency_tree.mk # only rule all runs
+# Cleanup: make -f 41_0_dependency_tree.mk clean
+# Usage: make -f 41_0_dependency_tree.mk # rules 'all', 'result', 'f1, 'f2' and 'f3' run.
+#        make -f 41_0_dependency_tree.mk # only rule all runs
 #        echo "New text number 2" > f2
-#        make -f 41_dependency_tree.mk # only 'result' and 'all' run
+#        make -f 41_0_dependency_tree.mk # only 'result' and 'all' run
 
 # Files all and clean must not exist.
 $(shell rm -f all clean)
