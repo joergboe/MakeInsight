@@ -18,16 +18,16 @@
 
 # In function context special characters ;|:#\ and sometimes , go unmolested through.
 text = 4 symbols $$$$$$$$ - 2 symbols $$$$ - 1 symbol $$ ;,|: \\\\\# 2 bs+hm \\\# 1 bs+hm \# hm # teststring
-$(info $(value text))
+$(info -§0- $(value text))
 
-$(eval $(info $(text))) # nothing to eval - info function expands to nothing - text is expanded once
+$(eval $(info -§1- $(text))) # nothing to eval - info function expands to nothing - text is expanded once
 
-$(eval $$(info $$(text))) # eval $(info $(text)) - text is expanded once
+$(eval $$(info -§2- $$(text))) # eval $(info $(text)) - text is expanded once
 
-$(eval $$(info $(text))) # eval $(info 4 symbols ...) - text is expanded twice
+$(eval $$(info -§3- $(text))) # eval $(info 4 symbols ...) - text is expanded twice
 
 # The value function prevents one level of expansion if text is a Recursively Expanded Variable.
-$(eval $$(info $(value text))) # eval $(info 4 symbols ...) - text is expanded once
+$(eval $$(info -§4- $(value text))) # eval $(info 4 symbols ...) - text is expanded once
 $(info )
 
 text = Dollar $$ must be escaped twice; paranteses must match (in this example); and braches may not match{; \

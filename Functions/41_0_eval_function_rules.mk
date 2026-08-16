@@ -1,6 +1,6 @@
 # Usage of function eval to generate rules
 
-# Usage: make -f 41_eval_function_rules.mk
+# Usage: make -f 41_0_eval_function_rules.mk
 
 # * Expansion in eval function - Escape $ and # symbols beforehand.
 # * All variables except $@ and $? are expanded in the body of the eval function.
