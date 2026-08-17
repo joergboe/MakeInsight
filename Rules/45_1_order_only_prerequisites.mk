@@ -22,52 +22,66 @@
 # it but, because the timestamps on directories change whenever a file is added, removed, or renamed, we certainly don’t
 # want to rebuild all the targets whenever the directory’s timestamp changes.
 
-# Usage: make -f 45_order_only_prerequisites.mk
-# Cleanup:make -f 45_order_only_prerequisites.mk clean
+# Usage: make -f 45_1_order_only_prerequisites.mk
+# Cleanup:make -f 45_1_order_only_prerequisites.mk clean
 
 # Make maintains the right order of rule execution also in case of parallel build
-# Usage: make -f 45_order_only_prerequisites.mk -j 4
-# Cleanup:make -f 45_order_only_prerequisites.mk clean
+# Usage: make -f 45_1_order_only_prerequisites.mk -j 4
+# Cleanup:make -f 45_1_order_only_prerequisites.mk clean
 
 # build the final target
-build/target: build/f1.o build/f2.o build/f3.o | build
+bin/target: build/f1.o build/f2.o build/f3.o | bin
 	@echo "--- run rule $@ ---"
 	@echo "print the normal prerequisites with \$$^ : $^"
 	@echo "print the order only prerequisites with \$$| : $|"
 	cat build/f1.o build/f2.o build/f3.o > $@
 
-# create the build directory
-build:
+# create the bin directory
+bin:
 	@echo "--- run rule $@ ---"
 	mkdir $@
+	@echo
 
 # Create the 'object files in build directory'
 build/f1.o: f1 | build
 	@echo "--- run rule $@ ---"
 	cp $< $@
+	@echo
 
 build/f2.o: f2 | build
 	@echo "--- run rule $@ ---"
 	cp $< $@
+	@echo
 
 build/f3.o: f3 | build
 	@echo "--- run rule $@ ---"
 	cp $< $@
+	@echo
+
+# create the build directory
+build:
+	@echo "--- run rule $@ ---"
+	mkdir $@
+	@echo
 
 # Create the original files
 f1:
 	@echo "--- run rule $@ ---"
 	echo "Text #1" > $@
+	@echo
 
 f2:
 	@echo "--- run rule $@ ---"
 	echo "Text #2" > $@
+	@echo
 
 f3:
 	@echo "--- run rule $@ ---"
 	echo "Text #3" > $@
+	@echo
 
 # cleanup all artifacts
 clean:
-	rm -rfv f{1..3} build
+	rm -fv f{1..3}
+	rm -rfv build bin
 .PHONY: clean
