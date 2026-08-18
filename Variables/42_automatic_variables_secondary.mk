@@ -15,10 +15,10 @@
 build/target: file1 file2 $$(info $$$$(@D) = '$$(@D)') | $$(@D)
 	touch $@
 
-file1 file2:
+file1 file2: $$(info $$$$(@D) = '$$(@D)')
 	touch $@
 
-build :
+build : $$(info $$$$(@D) = '$$(@D)')
 	mkdir $@
 
 .PHONY: clean
