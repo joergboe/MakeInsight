@@ -16,8 +16,12 @@
 # Usage: > make -f 41_1_dependency_tree_and_pathes.mk target2
 # Expected: Inconsistent usage results in failures.
 
+# Usage: > make -f 41_1_dependency_tree_and_pathes.mk target3
+# Expected: make: *** No rule to make target 'src/', needed by 'src/foobar2'.  Stop.
+
 # For the creation of the dependency tree make uses the targets and prerequisites almost literally.
 # Specifically, it does not canonize the path.
+# Not even the directory 'src' is considered when 'src/' is requested.
 # Exception: Only leading ./ Dot components are removed.
 
 prereq3 = $(abspath src/baz)
@@ -55,6 +59,13 @@ target2 : src/./foobar
 
 src/foobar:
 	@echo "rule $@"
+
+target3 : src/foobar2
+	@echo "rule $@"
+
+src/foobar2 : | src/
+	@echo "rule $@"
+	ls -l src
 
 .PHONY: clean
 clean:

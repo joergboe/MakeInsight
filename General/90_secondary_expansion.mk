@@ -9,13 +9,18 @@
 
 .SECONDEXPANSION:
 
-ONEVAR = foo
-TWOVAR = bar
+ONEVAR = foo$$
+TWOVAR = bar$$
+
+$(info $$(value TWOVAR) = $(value TWOVAR))
+$(info $(subst $$,$$$$,$(TWOVAR)))
 
 targets = target
-$(targets) : % : $(ONEVAR) $$(TWOVAR) file_$$$$_one file_$$$$$$$$_two
+$(targets) : % : $$(ONEVAR) $(subst $$,$$$$,$(TWOVAR)) file_$$$$_one file_$$$$$$$$_two
 	@echo 'Rule $@ : $^'
 	@echo 'Due to $?'
+# NOTE: Implicit prerequisites are expanded twice, thus a single symbol $ must be written using 4 $ symbols.
+# NOTE: If a variable is eagerly expanded variables in prerequisites, dollar symbols must be escaped.
 
 $(ONEVAR) $(TWOVAR) file_$$_one file_$$$$_two :
 	@echo 'Rule $@'
