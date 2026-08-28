@@ -11,3 +11,5 @@ foo
 bar
 foobar
 src/
+src?/
+build/
