@@ -46,6 +46,7 @@ target: $(objects)
 	touch $@
 	@echo
 
+# NOTE: Targets of chained implicit rules are intermediate by default.
 # Create the 'source' files
 %.src :
 	@echo "--- run 'source' rule $@ ---"

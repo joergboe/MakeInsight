@@ -16,19 +16,19 @@ $(info sources = $(sources))
 $(info objects = $(objects))
 $(info build_dir_list = $(build_dir_list))
 
-# build the final target
-$(builddir)/target: $(objects) | $(builddir)
+# build the final target - builddir is already existing
+$(builddir)/target: $(objects)
 	@echo -e "\n--- run rule $@ : $^ ---"
 	cat $^ > $@
 
-# Create the 'object files in build directory'
+# create the 'object files in build directory'
 # NOTE: This means every object depends on every build directory.
 $(objects) : $(builddir)/%.o : %.src | $(build_dir_list)
 	@echo -e "\n--- run rule $@ : $^ ---"
 	@echo "pattern stem \$$* : $*"
 	cat $^ > $@
 
-# Create the 'source' files
+# create the 'source' files
 .SECONDEXPANSION:
 # NOTE: Evaluation of automatic variables during the secondary expansion phase, especially of the target name variable
 # $$@, behaves similarly to evaluation within recipes.
@@ -37,11 +37,7 @@ $(sources) : %.src : | $$(@D) # The dir function is also possible
 	@echo "pattern stem \$$* : $*"
 	echo "Text $@" > $@
 
-# Create directory
-$(builddir) :
-	@echo -e "\n--- run rule $@ ---"
-	mkdir $@
-
+# create directories
 $(build_dir_list) :
 	@echo -e "\n--- run rule $@ ---"
 	mkdir -p $@

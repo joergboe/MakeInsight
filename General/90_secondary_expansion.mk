@@ -13,14 +13,17 @@ ONEVAR = foo$$
 TWOVAR = bar$$
 
 $(info $$(value TWOVAR) = $(value TWOVAR))
-$(info $(subst $$,$$$$,$(TWOVAR)))
+$(info )
 
 targets = target
-$(targets) : % : $$(ONEVAR) $(subst $$,$$$$,$(TWOVAR)) file_$$$$_one file_$$$$$$$$_two
+#$(targets) : % : $$(ONEVAR) $(subst $$,$$$$,$(TWOVAR)) file_$$$$_one file_$$$$$$$$_two
+$(targets) : % : $$(ONEVAR) $(value TWOVAR) file_$$$$_one file_$$$$$$$$_two
 	@echo 'Rule $@ : $^'
 	@echo 'Due to $?'
-# NOTE: Implicit prerequisites are expanded twice, thus a single symbol $ must be written using 4 $ symbols.
+	@echo
+# NOTE: Prerequisites are expanded twice, thus explicit prerequisites must write 4 dollar symbols for a single symbol $.
 # NOTE: If a variable is eagerly expanded variables in prerequisites, dollar symbols must be escaped.
 
 $(ONEVAR) $(TWOVAR) file_$$_one file_$$$$_two :
 	@echo 'Rule $@'
+	@echo

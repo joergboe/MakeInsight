@@ -17,18 +17,14 @@ all: program
 	@echo 'Executing $@'
 
 program: $(myobjects) helper.mk
-	@echo 'Start $@'
-	@echo '4 MAKEFILE_LIST=$(MAKEFILE_LIST)'
-	$(info 4 MAKE_RESTARTS=$(MAKE_RESTARTS))
-	@useCpu.sh 3 $@ ''
+	@echo 'Executing $@'
+	@./useCpu.sh -i $@ 3
 	@touch $@
 	@echo -e "End $@\n"
 	
 $(myobjects): %.o: %.xx
-	@echo 'Start $@'
-	@echo '3 MAKEFILE_LIST=$(MAKEFILE_LIST)'
-	@echo '3 MAKE_RESTARTS=$(MAKE_RESTARTS)'
-	@useCpu.sh 3 $@ ''
+	@echo 'Executing $@'
+	@./useCpu.sh -i $@ 3
 	@touch $@
 	touch helper.mk
 	@echo -e "End $@\n"
@@ -39,8 +35,10 @@ $(info 1 MAKE_RESTARTS=$(MAKE_RESTARTS))
 
 helper.mk:
 	@echo 'Executing $@'
-	@echo '2 MAKEFILE_LIST=$(MAKEFILE_LIST)'
-	@echo '2 MAKE_RESTARTS=$(MAKE_RESTARTS)'
-	@echo -e '$$(info Start reading helper.mk)\n$$(info X MAKEFILE_LIST=$$(MAKEFILE_LIST))\n$$(info X MAKE_RESTARTS=$$(MAKE_RESTARTS))' > helper.mk
-	@useCpu.sh 5 $@ ''
+	@echo -e '$$(info Start reading helper.mk)\n$$(info X MAKEFILE_LIST=$$(MAKEFILE_LIST))\n$$(info End reading helper.mk)' > helper.mk
+	@./useCpu.sh -i $@ 5
 	@echo -e "End $@\n"
+
+.PHONY: clean
+clean:
+	rm -f $(myfiles) $(myobjects) program helper.mk

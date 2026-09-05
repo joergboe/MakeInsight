@@ -32,11 +32,11 @@
 
 # The list with the targets is often hold in a variable.
 
-# Usage:   make -f 55_static_pattern_rules.mk
-# Cleanup: make -f 55_static_pattern_rules.mk clean
+# Usage:   make -f 55_1_static_pattern_rules.mk
+# Cleanup: make -f 55_1_static_pattern_rules.mk clean
 
 # Try with parallel build
-# Usage:   make -f 55_static_pattern_rules.mk -j 8
+# Usage:   make -f 55_1_static_pattern_rules.mk -j 8
 # runs step1: f1.src f2.src f3.src .src conf
 #      step2: f1.o f2.o f3.o .o
 #      step3: target

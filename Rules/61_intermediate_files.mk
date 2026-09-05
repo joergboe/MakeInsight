@@ -6,26 +6,26 @@
 # see: https://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
 
 # Usage:
-# make -f 61_chained_rules_explicit.mk STEP=1 target
+# make -f 61_intermediate_files.mk STEP=1 target
 # Expect:
 # The target is produced and all object files are deleted.
 
 # Run the produced target:
-# make -f 61_chained_rules_explicit.mk run
+# make -f 61_intermediate_files.mk run
 
 # Do not touch anything and run make again.
-# make -f 61_chained_rules_explicit.mk STEP=2 target
+# make -f 61_intermediate_files.mk STEP=2 target
 # Expect:
 # No rule is fired : make: 'target' is up to date.
 
 # Touch one source file and run make again.
-# make -f 61_chained_rules_explicit.mk STEP=3 target
+# make -f 61_intermediate_files.mk STEP=3 target
 # Expect:
 # All object files are re-created and the target is linked.
 # All object files are deleted.
 
 # Cleanup:
-# make -f 61_chained_rules_explicit.mk clean
+# make -f 61_intermediate_files.mk clean
 
 
 ifeq ($(MAKECMDGOALS),target)

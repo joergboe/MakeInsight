@@ -20,6 +20,7 @@ target : $$(OBJECTS)
 
 OTHER = file_$$_one1
 
+# NOTE: Dollar signs in pattern rules are handled properly during secondary expansion.
 $(OBJECTS): %.o : %.c $$(OTHER) file_$$$$_one2
 	@echo 'Rule $@ : $^'
 	@echo 'Due to $?'

@@ -11,9 +11,11 @@ targets = target
 $(targets) : % : $(ONEVAR) file_$$_one
 	@echo 'Rule $@ : $^'
 	@echo 'Due to $?'
+	@echo
 
 $(ONEVAR) $(TWOVAR) file_$$_one file_$$$$_two :
 	@echo 'Rule $@'
+	@echo
 
 .SECONDEXPANSION :
 $(targets) : % : $$(TWOVAR) file_$$$$$$$$_two

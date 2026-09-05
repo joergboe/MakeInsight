@@ -18,6 +18,7 @@
 # Cleanup: make -f 58_3_pattern_rules_dir.mk clean
 
 builddir ::= build
+$(info create dir $(builddir))
 $(shell mkdir $(builddir))
 
 sources = $(addprefix $(builddir)/,f1.src f2.src)

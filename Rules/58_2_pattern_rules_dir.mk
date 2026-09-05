@@ -16,6 +16,7 @@ ifdef NO_DIR
   builddir ::= .
 else
   builddir ::= build
+  $(info create dir $(builddir))
   $(shell mkdir $(builddir))
 endif
 
