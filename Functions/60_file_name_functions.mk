@@ -1,6 +1,7 @@
 # File Name Functions
 
 # Usage: make -f 60_file_name_functions.mk
+# Cleanup: make -f 60_file_name_functions.mk clean
 
 # Several of the built-in expansion functions relate specifically to taking apart file names or lists of file names.
 # see: https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html
@@ -87,7 +88,7 @@ $(info $$(wildcard 2?_special_functions.mk) = '$(wildcard 2?_special_functions.m
 $(info -§8c- [...] Matches any one of the characters enclosed between the brackets.)
 $(info $$(wildcard [234]?_*.mk) = '$(wildcard [234]?_*.mk)')
 
-$(info -§8d- ~ At the beginning of a file name represents the home sirectory.)
+$(info -§8d- ~ At the beginning of a file name represents the home directory.)
 $(info $$(wildcard ~/*) = '$(wildcard ~/*)')
 
 $(info -§8e- Wildcard function can search a list of patterns)
@@ -107,6 +108,7 @@ $(info $$(wildcard foo-bar) = '$(wildcard foo-bar)')
 
 $(info -§8g- No canonical path returned)
 $(info $$(wildcard src/headers/../../foo_bar) = '$(wildcard src/headers/../../foo_bar)')
+$(info $$(wildcard foo?bar ./foo?bar ././foo?bar) = '$(wildcard foo?bar ./foo?bar ././foo?bar)')
 $(info )
 
 $(info -§9- Realpath Function $$(realpath names…) - For each file name in names return the canonical absolute name.)

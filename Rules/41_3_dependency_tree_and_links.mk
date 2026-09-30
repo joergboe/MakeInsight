@@ -1,8 +1,8 @@
 # Dependencies and links
 
-# Usage: > make -f 41_2_dependency_tree_and_links.mk
+# Usage: > make -f 41_3_dependency_tree_and_links.mk
 # Expect: File operations are with link targets
-# Cleanup: > make -f 41_2_dependency_tree_and_links.mk clean
+# Cleanup: > make -f 41_3_dependency_tree_and_links.mk clean
 
 $(shell ln -s target2 target_ln; ln -s src/file1 link1; ln -s src/file2 link2;)
 

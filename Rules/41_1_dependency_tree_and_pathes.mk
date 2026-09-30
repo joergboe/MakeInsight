@@ -22,13 +22,13 @@
 # For the creation of the dependency tree make uses the targets and prerequisites almost literally.
 # Specifically, it does not canonize the path.
 # Not even the directory 'src' is considered when 'src/' is requested.
-# Exception: Only leading ./ Dot components are removed.
+# Exception: Only leading dot components are removed. See 41_2_dependency_tree_and_pathes.mk
 
 prereq3 = $(abspath src/baz)
 $(info prereq3 = $(prereq3))
 $(info )
 
-./target: foo ./foo src/../foo src/bar src/./bar ./src//bar src/baz $(prereq3) /$(prereq3)
+./target: foo src/../foo src/bar src/./bar src//bar src/baz $(prereq3) /$(prereq3)
 	@echo "rule $@"
 	@echo '$$@ = $@'
 	@echo '$$+ = $+'
@@ -36,13 +36,11 @@ $(info )
 	@echo '$$? = $?'
 	@echo '$$< = $<'
 	touch $@
-# NOTE: ./foo and foo are considered the same object
-# NOTE: ./foo yields foo
-# NOTE: foo ./src/../foo are considered different objects and separate rules are created.
+# NOTE: foo src/../foo are considered different objects and separate rules are created.
 # NOTE: src/bar, src/./bar and src//bar are considered different objects
 # NOTE: src/baz, $(abspath src/baz) and /$(abspath src/baz) are considered different objects
 
-foo ./foo ./src/../foo src/bar src/./bar src//bar ./src/baz $(prereq3) /$(prereq3) : | src
+foo src/../foo src/bar src/./bar src//bar src/baz $(prereq3) /$(prereq3) : | src
 	@echo "rule $@"
 ifdef TOUCH
 	touch $@

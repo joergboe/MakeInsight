@@ -1,6 +1,7 @@
 # Secondary Expansion
 
 # One may split prerequisites and place the candidates for secondary expansion near the end of the makefie.
+# This works for explicite rules. (Static pattern rules are explicite rules.)
 
 # Usage: make -f 92_secondary_expansion.mk
 
