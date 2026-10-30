@@ -6,6 +6,7 @@
 # Several of the built-in expansion functions relate specifically to taking apart file names or lists of file names.
 # see: https://www.gnu.org/software/make/manual/html_node/File-Name-Functions.html
 empty =
+space = $(empty) $(empty)
 
 $(info -§1- Dir Function $$(dir names…) - Extracts the directory-part of each file name in names.)
 
@@ -15,6 +16,7 @@ $(info -§1a- $$(dir src/foo.c hacks /bin/bash /opt/mktsimple /opt/mktsimple/) =
 # name contains no slash, the directory part is the string ‘./’.
 
 $(info -§1b- Empty list $$(dir $$(empty)) = '$(dir $(empty))')
+$(info Space $$(dir $$(space)) = '$(dir $(space))')
 
 $(info -§1c- Dir up $$(dir ../src/src.cpp ./../src/src.cpp src/../src2/f1.cpp) =\
   '$(dir ../src/src.cpp ./../src/src.cpp src/../src2/f1.cpp)')

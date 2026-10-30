@@ -6,7 +6,7 @@
 # Usage: make -f 70_remake_makefile.mk
 # Expected: 2 restarts of make
 
-# and    make -f 70_remake_makefile.mk NOTOUCH=1
+# and    make -f 70_remake_makefile.mk NOUPDATE=1
 # Expected: No restart
 
 # or     make -f 70_remake_makefile.mk --no-builtin-rules --debug
@@ -28,17 +28,19 @@ ifneq ($(MAKE_RESTARTS),2)
   xx := $(shell touch updateMakefile)
 endif
 
-target2: target1; @echo 'RULE $@'
+target2: target1; @echo -e 'RULE $@\n'
 
-target1: ; @echo 'RULE $@'
+target1: ; @echo -e 'RULE $@\n'
 
 70_remake_makefile.mk: updateMakefile
 	@echo 'RULE $@'
-ifeq ($(NOTOUCH),)
+ifeq ($(NOUPDATE),)
 	touch $@
 endif
+	@echo
 
 .PHONY: clean
 clean:; rm -f updateMakefile target1 target2
 
 $(info END reading $(MAKEFILE_LIST))
+$(info )

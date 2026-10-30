@@ -65,13 +65,6 @@ xi :::= later
 $(info expansion of xi - $(xi))
 $(info expansion of yi - $(yi))
 
-$(info Immediately Expanded Variables are automatically quoted)
-xi :::= three$$four
-yi :::= one$$two $(xi)
-$(info expansion of xi - $(xi))
-$(info expansion of yi - $(yi))
-$(info )
-
 # With the operator :::= it is not possible to assign a variable reference or a function reference to the immediately
 # expanded variable. Such references are escaped immediately. Thus during expansion, it won’t expand any variables or
 # run any functions.
@@ -113,62 +106,13 @@ $(info expansion vs=$(vs) value vs=$(value vs))
 $(info expansion vi=$(vi) value vi=$(value vi))
 $(info )
 
-# Quoting means dollar symbol is escaped.
-vr = one$$two\# no komment
-vs ::= one$$two\# no komment
-vi :::= one$$two\# no komment
+# Quoting means dollar symbol is escaped. Hash mark is not affected.
+vr = one$$two \# This is not a comment.
+vs ::= one$$two \\\# This is not a comment.
+vi :::= one$$two \\\\\# This is not a comment.
 $(info expansion vr=$(vr) value vr=$(value vr))
 $(info expansion vs=$(vs) value vs=$(value vs))
 $(info expansion vi=$(vi) value vi=$(value vi))
-$(info )
-
-$(info Conditional assignement - operator ?=)
-# The operators '?=' and '+=' preserve the flavor of the variable, if it exists, and creates a recursively expanded
-# variable if the variable not exists.
-
-xr ?= new
-xs ?= new
-xi ?= new
-z ?= new
-
-$(info expansions - xr=$(xr) xs=$(xs) xi=$(xi) z=$(z))
-$(info flavors - xr=$(flavor xr) xs=$(flavor xs) xi=$(flavor xi) z=$(flavor z))
-$(info )
-
-$(info Conditional assignement to an empty var)
-# The operator '?=' is a shorthand for:
-# ifeq ($(origin FOO), undefined)
-# FOO = bar
-# endif
-FOO =
-FOO ?= new
-$(info If FOO was empty but defined after assignment FOO ?= bar is '$(FOO)')
-$(info )
-
-$(info Append - operator +=)
-yr += $(z)
-ys += $(z)
-yi += $(z)
-zz += $(z)
-$(info flavors - yr=$(flavor yr) ys=$(flavor ys) yi=$(flavor yi) zz=$(flavor zz))
-$(info expansions - yr='$(yr)' ys='$(ys)' yi='$(yi)' zz='$(zz)')
-z = newest
-$(info z = $(z))
-$(info expansions - yr='$(yr)' ys='$(ys)' yi='$(yi)' zz='$(zz)')
-$(info values     - yr='$(value yr)' ys='$(value ys)' yi='$(value yi)' zz='$(value zz)')
-$(info NOTE: Variable yi is considered a recursive variable; when you append to it with ‘+=’ the value on the)
-$(info right-hand side is not expanded immediately!)
-$(info )
-
-$(info Append to an empty var)
-FOO =
-FOO += bar
-$(info If FOO was empty but defined after assignment FOO ?= bar is '$(FOO)')
-empty ::=
-space ::= $(empty) $(empty)
-FOO = $(space)
-FOO += bar
-$(info If FOO was a single space after assignment FOO ?= bar is '$(FOO)')
 $(info )
 
 all:

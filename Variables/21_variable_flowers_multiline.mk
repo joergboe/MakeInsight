@@ -38,16 +38,16 @@ $(info )
 
 
 $(info Immediately Expanded Variables define y :::=)
-xi :::= one$$two
+xi :::= foo
 define yi :::=
     $(xi)
-    three$$four
+    bar
 endef
 $(info expansion of xi - $(xi))
 $(info expansion of multiline yi)
 $(info $(yi))
 
-xi :::= three$$four
+xi :::= later
 $(info expansion of xi - $(xi))
 $(info expansion of multiline yi)
 $(info $(yi))

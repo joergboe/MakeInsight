@@ -32,47 +32,48 @@ endif
 .SUFFIXES:
 
 define makefileContent ::=
-$$(info ** START reading generatedMakefile.mk)
+$$(info * START reading generatedMakefile.mk)
 $$(info MAKEFILE_LIST=$$(MAKEFILE_LIST))
 $$(info MAKE_RESTARTS=$$(MAKE_RESTARTS))
-$$(info ** END reading generatedMakefile.mk)
+$$(info * END reading generatedMakefile.mk)
+$$(info )
 endef
-# Export to environment of recipe
+# Exporting variable to environment of recipe.
 export makefileContent
 
-ifndef NOTOUCH
+ifeq ($(NOTOUCH),)
   TOUCH = 1
 endif
 
-# Touch updateMakefile.mk at least one
+# Touch updateMakefile.mk at least once.
 ifndef MAKE_RESTARTS
   $(info touch updateMakefile.mk)
   $(shell touch updateMakefile.mk)
 else
   ifneq ($(MAKE_RESTARTS),2)
-    ifdef TOUCH
+    ifneq ($(TOUCH),)
       $(info touch updateMakefile.mk)
       $(shell touch updateMakefile.mk)
     endif
   endif
 endif
 
-target2: target1; @echo 'RULE $@'
+target2: target1; @echo -e 'RULE $@\n'
 
-target1: ; @echo 'RULE $@'
+target1: ; @echo -e 'RULE $@\n'
 
 # Use an empty receipt to prevent implicit rule searching at all
 72_remake_makefile.mk: ;
 
-ifndef NORULE
-generatedMakefile.mk: updateMakefile.mk
+ifeq ($(NORULE),)
+  generatedMakefile.mk: updateMakefile.mk
 	@echo 'RULE $@'
-ifndef NOUPDATE
-	@echo "Create/update $@"
+  ifeq ($(NOUPDATE),)
+	@echo -e 'Create/update $@\n'
 	@echo "$${makefileContent}" > $@
-else
-	@echo done
-endif
+  else
+	@echo -e 'No update of $@\n'
+  endif
 endif
 
 # NOTE: generatedMakefile.mk may not exist, but must be target of one rule.
@@ -82,4 +83,5 @@ include generatedMakefile.mk
 clean:
 	rm -f generatedMakefile.mk updateMakefile.mk target*
 
-$(info END reading $(MAKEFILE_LIST))
+$(info *** END reading $(MAKEFILE_LIST))
+$(info )

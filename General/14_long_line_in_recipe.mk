@@ -24,5 +24,5 @@ space
  space
 	##########
 	echo 'hello \
-	world' ; echo "hello \
-    world"
+	world #1' ; echo "hello \
+    world #2"
